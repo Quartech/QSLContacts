@@ -1,9 +1,9 @@
 # Code Challenge Notice, Instructions & Rules
-Re: Competition "Year 1 - Data Driven Mine Oversight" (the “RFP”)
+Re: Competition "The Sprint with Us Code Challenge" (the Mock Sprint with Us Code Challenge)
 
-Government Contact: andrew.l.sutherland@gov.bc.ca 
+Quartech Contact: brad.head@gmail.com 
 
-This notice is dated June 8, 2018 (the “Notice Date”).
+This notice is dated July 11, 2018 (the “Notice Date”).
 
 Congratulations - you are a Shortlisted Proponent eligible to participate in the Code Challenge (Step 4 of the evaluation process described on the Evaluation tab of the RFP).
 ## Rules and Instructions
@@ -30,19 +30,19 @@ Deadline:
 10. The rules and instructions set forth in this notice are in addition to any rules,
 terms and conditions set forth elsewhere in the RFP.
 
-# Code Challenge (Mines)
+# Code Challenge (QSL - BC GovDirectory)
 
 ## Description
 
 Included are scripts for building and running two Docker containers: 
 * A MongoDB database loaded with the sample Northwind data
-* A Postgres database loaded with the sample Northwind data
 
 The scripts handle retrieval of the appropriate images, loading of the sample data, and setting of default user credentials.
 
 ## Requirements
 
 * Docker
+* Node.JS
 
 ## Getting Started
 
@@ -56,29 +56,14 @@ The scripts handle retrieval of the appropriate images, loading of the sample da
 
 ### Introduction
 
-This code challenge asks you to build an application that can query a given database.  The application must be able to query both SQL and non-SQL databases.
+This code challenge asks you to build an application that fetch the BC Government Directory XML document from DataBC.  The application must be able to convert the XML to display on screen and to export any contact information as a VCard 3.0 file.
 
-The application must allow a user to create and execute a query.  The user must be able to create a query using either the AND (∧) or OR (∨) logical operator to link a series of operands.  Once a user has created a query, the user must be able to execute the query to return a list of items from the database.  The list may be empty. 
+The application must allow a user to find a contact by name or partial name.  The user must be able to filter contacts by organization. 
+The application must sort the contacts by surname, by default.
 
-Each operand will consist of an attribute, operator and value.  For instance, the expression “Height >= 5” would form a valid operand.  In these instructions, the term “operand” will also be referred to as “query condition”.
+The url to the xml file, which the government updates daily is:
 
-The typical user will be someone who is not familiar with Boolean logic.  That is, assume the user does not know the formal meaning of the AND and OR logical operators.
-
-### Query Builder UI Requirements
-
-The application must allow the user to perform the following operations:
-
-1.	Select a logical operator (either AND or OR)
-2.	Conjoin any number of operands using the AND operator
-3.	Disjoin any number of operands using the OR operator
-4.	Perform query on chosen query terms
-5.	Return a list of selected items
-6.	Clicking on a selected item presents additional detailed item information
-7.	Clear the query builder
-
-The application must allow administrators to perform the following operations:
-
-1.	Select a database (either SQL or non-SQL)
+ http://dir.gov.bc.ca/downloads/BCGOV_directory.xml
 
 ### Technical Requirements
 
@@ -88,65 +73,29 @@ Participating teams are not limited to a certain stack or any specific technolog
 
 All of the following user stories must be completed.  They may be completed in any order.
 
-#### User Story #1 – Select a Logical Operator
+#### User Story #1 – View the BC Government directory as a contact list
 
-As a user, I want to be able to create an extended query (that is, connect any number of operands together) by using either the AND or the OR logical operator.
+As a user, I want to be able to view the BC government directory as a listing, ordered by surname ascending, and then each list item, I can navigate to the details of the user. 
 
-Given that I am viewing the user interface
-When I activated the logical operator control
-Then the control is set to either “AND” or “OR”
+#### User Story #2 – Search by government employee attribute
 
-#### User Story #2 – Complete a Query Condition
+As a user, I want a single search field that I can use to filter the list of government employee contacts. This may be by name, partial name or other inofmration, i.e. phone number, etc. Ideally, the results are shown as I type.
 
-As a user, I want to be to complete a query condition using any database attribute.  I want the condition’s operators and values to be based on my chosen database attribute’s type.
 
-Given that I have selected a database attribute
-When I select an operator 
-Then I am present with a list of operators based on the type of the chosen attribute
-And When I select a value
-Then I am present with a list of values based on the type of the chosen attribute
+#### User Story #3 – Email a contact from the contact details view 
 
-#### User Story #3 – Add a New Query Condition
+As a user, I want to conveniently click on the contact's email address and have it attempt to invoke my system's default email application.
 
-As a user, I want to be able to join multiple operands together to form a query.
+#### User Story #4 – Phone a contact from the contact details view
 
-Given that I have entered one or more query conditions
-When I activated the UI control that allows me to add a new query condition
-Then I am presented with a UI control that allows me to compose a new query condition by selecting the attribute, operator and value
-
-#### User Story #4 – Delete a Query Condition
-
-As a user, I want to be able to delete a query condition.
-
-Given that I have entered one or more query conditions
-When I activated the UI control that allows me to delete a new query condition
-Then that query condition is removed from the UI
+As a user, I want to be able to phone a contact by clicking or tapping on the phone number. This need only function when I am using a smartphone.
  
-#### User Story #5 – Execute a Query
+#### User Story #5 – Save as VCard 3.0 
 
-As a user who has composed my query conditions, I want to be able to execute the query operation on the database.
+As a user, I want to have the option to save a contact details as a VCARD 3.0 format and ideally, have it available to import into my default contacts application whether on a phone, tablet or desktop. 
 
-Given that I have composed a query consisting of one or more query conditions
-When I activated the UI control that allows me to execute a query against the database
-Then the query is executed
-
-#### User Story #6 – Return a List of Query Results
-
-As a user who has executed a query, I want to be able to view the results returned by the query.
-
-Given that I have executed a query
-When the query generates results
-Then the list of results is made visible in the UI
-And When the query generates no results
-Then the UI notifies me that the query did not return any results
-
-#### User Story #7 – Display an Individual Query Result
-
-As a user who has executed a query, I want to be able to view an individual result returned by the query.
-
-Given that I have generated a list of query results
-When I select one of the query results
-Then I am presented with a view listing the result’s attribute/value pairs
+#### User Story #6 – Service is available when the xml file is not.
+As a user, I want to be able to browse the contact list even when access to the government's BCGOV_Directory.xml file is offline.
 
 #### User Story #8 – Close Individual Query Result View
 
@@ -156,31 +105,10 @@ Given that I have opened an individual query results view
 When I activate the button that closes the view
 Then the view closes
  
-#### User Story #9 – Reset Query Builder
-
-As a user, I want to be reset the query builder to start a new query.
-
-Given that I am using the query builder
-When I activate the button that resets the query
-Then the query builder is reset to its initial condition
-
-#### User Story #10 – Support for Both  SQL and non-SQL Databases
-
-As an administrator, I want to configure the query application to support either a SQL or non-SQL database 
-
-Case #1:
-Given that I have selected a SQL database
-When the user creates a valid query
-Then the application returns a valid result
-
-Case #2:
-Given that I have selected a non-SQL database
-When the user creates a valid query
-Then the application returns a valid result
 
 ### REST API Requirements
 
-The query operation must be implemented by making a server-side REST API call to an endpoint with the signature “/query”.
+The fetch and search query operations must be implemented by making a server-side REST API call to an endpoint.
 
 The operation to select an individual item from the query results list must be implemented by making a server-side REST API call to an endpoint with the signature “/fetchItemDetails”.
 
