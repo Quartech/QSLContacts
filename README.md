@@ -97,14 +97,6 @@ As a user, I want to have the option to save a contact details as a VCARD 3.0 fo
 #### User Story #6 – Service is available when the xml file is not.
 As a user, I want to be able to browse the contact list even when access to the government's BCGOV_Directory.xml file is offline.
 
-#### User Story #8 – Close Individual Query Result View
-
-As a user, I want to be able to close an individual query results view.
-
-Given that I have opened an individual query results view
-When I activate the button that closes the view
-Then the view closes
- 
 
 ### REST API Requirements
 
