@@ -1,1 +1,1 @@
-# Angular backend for QSLContacts app
+# Angular frontend for QSLContacts app
