@@ -3,7 +3,7 @@ services:
   frontend-prod:
     container_name: frontend-container-prod
     build:
-      context: .
-      dockerfile: ./frontend/Dockerfile-prod
+      context: ./frontend
+      dockerfile: Dockerfile-prod
     ports:
       - '80:80'
