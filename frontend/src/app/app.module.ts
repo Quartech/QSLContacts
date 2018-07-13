@@ -5,13 +5,11 @@ import { CoreModule } from '@app/core';
 
 import { AppComponent } from './app.component';
 import { ContactListComponent } from './components/contact-list/contact-list.component';
-import { SearchComponent } from './components/search/search.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ContactListComponent,
-    SearchComponent
+    ContactListComponent
   ],
   imports: [
     BrowserModule,
