@@ -8,6 +8,5 @@ import { ApiService } from '@app/core';
 })
 export class AppComponent {
   title = 'QSLContacts';
-
   constructor(private api: ApiService) {}
 }
