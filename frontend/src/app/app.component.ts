@@ -7,7 +7,7 @@ import { ApiService } from '@app/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'frontend';
+  title = 'QSLContacts';
 
   constructor(private api: ApiService) {}
 }
