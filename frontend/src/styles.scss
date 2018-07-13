@@ -1,4 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
-// Layout
+// Base
+@import '/assets/styles/base/_reset.scss';
+@import '/assets/styles/base/_typography.scss';
+
+// Partials
 @import '/assets/styles/partials/_app-layout.scss';
+@import '/assets/styles/partials/_app-header.scss';
+@import '/assets/styles/partials/_app-main.scss';

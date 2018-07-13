@@ -1,0 +1,100 @@
+// Searchbox
+.searchbox {
+  padding: 1rem;
+  flex: 0 0 auto;
+
+  &__input {
+    position: relative;
+
+    input {
+      padding-top: 0.75rem;
+      padding-right: 4rem;
+      padding-bottom: 0.75rem;
+      padding-left: 0.75rem;
+    }
+
+    .clear-btn {
+      position: absolute;
+      top: 0.1rem;
+      right: 0.1rem;
+      bottom: 0.1rem;
+      background: transparent;
+
+      i {
+        margin-top: 0.25rem;
+      }
+    }
+  }
+}
+
+// Contact List
+.contact-list {
+  flex: 1 1 auto;
+  padding: 1rem;
+  overflow-y: auto;
+  background-color: #f7f8fa;
+
+  .table {
+    font-size: 0.9375rem;
+    table-layout: fixed;
+
+    th {
+      background: #eee;
+    }
+  }
+}
+
+.contact-card {
+  display: flex;
+  flex-direction: row;
+
+  &__details {
+    flex: 1 1 auto;
+  }
+
+  &__name {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  &__org {
+    color: #777;
+    font-size: 0.875rem;
+  }
+
+  &__actions {
+    padding: 0.25rem 0;
+
+    .btn-outline-primary {
+      border: none;
+    }
+  
+    a {
+      display: inline-block;
+      padding: 0.5rem;
+  
+      i {
+        margin-top: -0.1rem;
+        vertical-align: middle;
+      }
+
+      span {
+        margin-left: 0.25rem;
+        font-size: 0.9375rem;
+      }
+  
+      &::after {
+        display: block;
+        clear: both;
+      }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .contact-card__actions {
+    .btn-label {
+      display: none;
+    }
+  }
+}
