@@ -2,75 +2,29 @@
 <!-- Search-->
 <div class="searchbox">
   <div class="searchbox__input">
-    <input class="form-control" type="text" placeholder="Search Directory" id="contactSearchInput" />
-    <button role="button" class="clear-btn btn btn-light" id="contactSearchBtn" onclick="clearContactSearch()">
-      <i class="material-icons">
-        close
-        </i>
+    <input class="form-control" type="text" placeholder="Search Directory" id="contactSearchInput" [(ngModel)]="searchString" />
+    <button role="button" class="clear-btn btn btn-light" id="contactSearchBtn" (click)="clearContactSearch()">
+      <i class="material-icons">close</i>
     </button>
   </div>
 </div>
 
 <!-- Contact List -->
 <div class="contact-list">
-  <ul class="list-group">
+  <ul class="list-group" *ngFor="let contact of contacts | contactFilter : searchString">
     <li class="contact-card list-group-item">
       <div class="contact-card__details">
-        <div class="contact-card__name">Last Name, First Name</div>
-        <div class="contact-card__org">Organization Name</div>
+        <div class="contact-card__name">{{contact.name}}</div>
+        <div class="contact-card__org">{{contact.organization}}</div>
       </div>
       <div class="contact-card__actions">
-        <a class="btn btn-outline-primary" href="mailto: email@email.com">
-          <i class="material-icons">
-          email
-          </i>
-          <span class="btn-label">email@email.com</span>
+        <a class="btn btn-outline-primary" href="mailto:{{contact.email}}">
+          <i class="material-icons">email</i>
+          <span class="btn-label">{{contact.email}}</span>
         </a>
-        <a class="btn btn-outline-primary" href="tel:1+111+111+1111">
-          <i class="material-icons">
-            phone
-          </i>
-          <span class="btn-label">1-111-111-1111</span>
-        </a>
-      </div>
-    </li>
-    <li class="contact-card list-group-item">
-      <div class="contact-card__details">
-        <div class="contact-card__name">Last Name, First Name</div>
-        <div class="contact-card__org">Agency Name</div>
-      </div>
-      <div class="contact-card__actions">
-        <a class="btn btn-outline-primary" href="mailto: email@email.com">
-          <i class="material-icons">
-          email
-          </i>
-          <span class="btn-label">email@email.com</span>
-        </a>
-        <a class="btn btn-outline-primary" href="tel:1+111+111+1111">
-          <i class="material-icons">
-            phone
-          </i>
-          <span class="btn-label">1-111-111-1111</span>
-        </a>
-      </div>
-    </li>
-    <li class="contact-card list-group-item">
-      <div class="contact-card__details">
-        <div class="contact-card__name">Last Name, First Name</div>
-        <div class="contact-card__org">Agency Name</div>
-      </div>
-      <div class="contact-card__actions">
-        <a class="btn btn-outline-primary" href="mailto: email@email.com">
-          <i class="material-icons">
-          email
-          </i>
-          <span class="btn-label">email@email.com</span>
-        </a>
-        <a class="btn btn-outline-primary" href="tel:1+111+111+1111">
-          <i class="material-icons">
-            phone
-          </i>
-          <span class="btn-label">1-111-111-1111</span>
+        <a class="btn btn-outline-primary" href="tel:{{contact.phone}}">
+          <i class="material-icons">phone</i>
+          <span class="btn-label">{{contact.phone}}</span>
         </a>
       </div>
     </li>

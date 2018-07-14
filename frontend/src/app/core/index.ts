@@ -1,3 +1,3 @@
-export * from './core.module';
-export * from './http/http';
-export * from './http/api.service';
+export * from '@app/core/core.module';
+export * from '@app/core/http/http';
+export * from '@app/core/http/api.service';

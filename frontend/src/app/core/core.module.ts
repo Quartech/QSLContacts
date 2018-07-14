@@ -2,8 +2,8 @@ import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 /* our own custom services  */
-import { ApiRequest } from './http/http';
-import { ApiService } from './http/api.service';
+import { ApiRequest } from '@app/core/http/http';
+import { ApiService } from '@app/core/http/api.service';
 
 @NgModule({
   imports: [
