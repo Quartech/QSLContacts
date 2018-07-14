@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { ApiRequest } from './http';
+import { ApiRequest } from '@app/core/http/http';
 
 /**
  * API Service. Connects to server-side Rest API

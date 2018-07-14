@@ -2,19 +2,23 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { CoreModule } from '@app/core';
+import { FormsModule } from '@angular/forms';
 
-import { AppComponent } from './app.component';
-import { ContactListComponent } from './components/contact-list/contact-list.component';
+import { AppComponent } from '@app/app.component';
+import { ContactListComponent } from '@app/components/contact-list/contact-list.component';
+import { ContactFilterPipe } from './pipes/contact-filter.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ContactListComponent
+    ContactListComponent,
+    ContactFilterPipe
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    CoreModule
+    CoreModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
