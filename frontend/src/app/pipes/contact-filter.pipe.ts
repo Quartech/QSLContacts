@@ -17,18 +17,18 @@ export class ContactFilterPipe implements PipeTransform {
       return contactList.filter((item) => {
         let isMatch = true;
         searchTerms.forEach((term) => {
-          if (item.name.toLowerCase().includes(term)
-              || item.title.toLowerCase().includes(term)
-              || item.organization.toLowerCase().includes(term)
-              || item.email.toLowerCase().includes(term)
-              || item.phone.toLowerCase().includes(term)) {
-            isMatch = isMatch && true;
-          }
+          isMatch = isMatch && (item.name.toLowerCase().includes(term)
+                                || item.title.toLowerCase().includes(term)
+                                || item.organization.toLowerCase().includes(term)
+                                || item.email.toLowerCase().includes(term)
+                                || item.phone.toLowerCase().includes(term));
         });
         return isMatch;
       });
     } else {
       return contactList;
+    }
   }
+
 
 }
