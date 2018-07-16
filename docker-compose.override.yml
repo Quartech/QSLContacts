@@ -1,0 +1,11 @@
+version: '3.6'
+services:
+  frontend:
+    ports:
+    - 4200:4200
+  backend:
+    build:
+      args:
+        - NODE_ENV=development
+    ports:
+      - 3000:80
