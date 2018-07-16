@@ -4,11 +4,15 @@
   "description": "Backend API for QSLContacts",
   "main": "dist/server.js",
   "scripts": {
+    "start": "nodemon dist/server.js",
+    "prebuild": "npm run clean",
+    "build": "npm run build-ts && npm run lint",
+    "build-ts": "tsc",
+    "clean": "rimraf dist",
     "dev": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/server.ts",
-    "start": "",
-    "build": "",
-    "lint": "",
-    "test": "cross-env TS_NODE_PROJECT=./tsconfig.spec.json && mocha -r ts-node/register src/**/*.spec.ts"
+    "prod": "npm run build && npm run start",
+    "lint": "tslint -c tslint.json -p tsconfig.json",
+    "test": "cross-env TS_NODE_PROJECT=./tsconfig.spec.json && mocha --require mochaSetup --require ts-node/register src/**/*.spec.ts"
   },
   "author": "",
   "license": "Apache-2.0",
@@ -34,6 +38,7 @@
     "cross-env": "5.2.0",
     "mocha": "5.2.0",
     "nodemon": "1.18.1",
+    "rimraf": "2.6.2",
     "supertest": "3.1.0",
     "ts-node": "7.0.0",
     "tslint": "5.10.0",

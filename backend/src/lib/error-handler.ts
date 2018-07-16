@@ -6,7 +6,7 @@ import restify from 'restify';
  * @param server {import('restify').Server}
  */
 export function registerErrorHandler(server: restify.Server) {
-  var httpStatusCodes = require('http-status');
+  const httpStatusCodes = require('http-status');
 
   server.on('NotFound', (req, res) => {
     res.send(
@@ -39,4 +39,4 @@ export function registerErrorHandler(server: restify.Server) {
   server.on('restifyError', (req, res, err) => {
     res.send(httpStatusCodes.INTERNAL_SERVER_ERROR, err);
   });
-};
+}
