@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { ApiRequest } from '@app/core/http/http';
+import { Contact } from '@app/models/contact';
 
 /**
  * API Service. Connects to server-side Rest API
@@ -9,5 +10,17 @@ import { ApiRequest } from '@app/core/http/http';
   providedIn: 'root'
 })
 export class ApiService {
-  constructor(private api: ApiRequest) { }
+  constructor(private api: ApiRequest) {}
+
+  getContacts() {
+    return this.api.get<Array<Contact>>('/api/v1/contacts');
+  }
+
+  getContactVCard(contact: Contact) {
+    return this.api.post<ContactResponse>('/api/v1/contactvcard', contact);
+  }
+}
+
+interface ContactResponse {
+  data: string;
 }

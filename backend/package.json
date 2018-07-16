@@ -23,6 +23,7 @@
     "restify-cors-middleware": "1.1.1",
     "restify-errors": "6.1.1",
     "restify-url-semver": "1.1.1",
+    "vcards-js": "2.8.0",
     "winston": "3.0.0",
     "xml-js": "^1.6.7"
   },

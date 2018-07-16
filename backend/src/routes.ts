@@ -3,6 +3,7 @@ import { InternalServerError } from 'restify-errors';
 import winston from 'winston';
 import { Person, getBcGovPersonsFromXml } from './xmlToJson';
 import getXml from './mockHttp';
+import { createVCard } from './jsonToVcard';
 
 // wraps request handling code to ensure next() is always called at the end...
 // this is a Restify requirement
@@ -45,6 +46,11 @@ export function applyRoutes(app: restify.Server) {
     });
   };
 
+  const contactVCard: restify.RequestHandler = (req, res, next) => {
+    const vcard = createVCard(req.body);
+    res.send(vcard.getFormattedString());
+  };
+
   // TODO: add your route handlers here
   // ...
 
@@ -52,6 +58,8 @@ export function applyRoutes(app: restify.Server) {
   app.get('/', respondWith(index));
   app.get('/echo/:name', respondWith(echo));
   app.get('/health', respondWith(health));
+
+  app.post('/contactvcard', respondWith(contactVCard));
 
   // TODO: add your routes here
   // ...
