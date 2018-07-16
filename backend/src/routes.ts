@@ -1,4 +1,8 @@
 import restify from 'restify';
+import { InternalServerError } from 'restify-errors';
+import winston from 'winston';
+import { Person, getBcGovPersonsFromXml } from './xmlToJson';
+import getXml from './mockHttp';
 
 // wraps request handling code to ensure next() is always called at the end...
 // this is a Restify requirement
@@ -14,8 +18,19 @@ const respondWith = (callback: restify.RequestHandler): restify.RequestHandler =
 export function applyRoutes(app: restify.Server) {
   // route handlers
   const index: restify.RequestHandler = (req, res, next) => {
-    res.send({ message: 'it works' });
+    winston.debug('starting / request');
+    // TODO: replace hardcoded url with env var.
+    getXml('http://dir.gov.bc.ca/downloads/BCGOV_directory.xml', (err, data) => {
+      if (err) {
+        winston.error(err);
+        res.send(new InternalServerError(err));
+      }
+      const persons: Array<Person> = getBcGovPersonsFromXml(data);
+      res.send({ message: JSON.stringify(persons) });
+      winston.debug('completed / request');
+    });
   };
+
   const echo: restify.RequestHandler = (req, res, next) => {
     res.send(req.params);
   };

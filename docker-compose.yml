@@ -4,7 +4,14 @@ services:
     build:
       context: ./frontend
     image: frontend-qsl-contacts:latest
+    networks:
+      - shared
   backend:
     build:
       context: ./backend
     image: backend-qsl-contacts:latest
+    networks:
+      - shared
+
+networks:
+  shared:

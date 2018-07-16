@@ -1,6 +1,6 @@
 
 import 'mocha';
-import supertest from 'supertest'
+import supertest from 'supertest';
 import app from './app';
 
 describe('App', () => {
@@ -9,7 +9,7 @@ describe('App', () => {
       .get('/api/v1/')
       .expect('Content-Type', /json/)
       .expect(200)
-  );
+  ).timeout(20000);
 
   it('health-check works', () =>
     supertest(app)
