@@ -22,7 +22,7 @@ const formatError = (res: restify.Response, body: any) => {
       data: isDebugMode ? body.stack : undefined
     };
   }
-}
+};
 
 /**
  * @param {restify.Response} res
@@ -41,7 +41,7 @@ const formatSuccess = (res: restify.Response, body: any) => {
     status: 'success',
     data: body
   };
-}
+};
 
 /**
  * Main function - overrides the default Restify formatter for `content-type` of `application/json`
