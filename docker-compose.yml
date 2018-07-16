@@ -1,0 +1,10 @@
+version: '3.6'
+services:
+  frontend:
+    build:
+      context: ./frontend
+    image: frontend-qsl-contacts:latest
+  backend:
+    build:
+      context: ./backend
+    image: backend-qsl-contacts:latest
