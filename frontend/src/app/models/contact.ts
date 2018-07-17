@@ -6,10 +6,10 @@ export class Contact {
   public organization: String;
 
   constructor(contact) {
-    this.name = contact.name;
-    this.title = contact.title;
-    this.email = contact.email;
-    this.organization = contact.organization;
-    this.phone = contact.phone;
+    this.name = contact && contact.name || '';
+    this.title = contact && contact.title || '';
+    this.email = contact && contact.email || '';
+    this.organization = contact && contact.organization || '';
+    this.phone = contact && contact.phone || '';
   }
 }
