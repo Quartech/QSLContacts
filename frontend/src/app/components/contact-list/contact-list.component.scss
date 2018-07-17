@@ -27,6 +27,16 @@
   }
 }
 
+.pagination {
+  margin-right: auto;
+  margin-bottom: 0;
+
+  &__result-count {
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+}
+
 // Contact List
 .contact-list {
   flex: 1 1 auto;
@@ -68,11 +78,11 @@
     .btn-outline-primary {
       border: none;
     }
-  
+
     a, button {
       display: inline-block;
       padding: 0.5rem;
-  
+
       i {
         margin-top: -0.1rem;
         vertical-align: middle;
@@ -84,7 +94,7 @@
         margin-left: 0.25rem;
         font-size: 0.875rem;
       }
-  
+
       &::after {
         display: block;
         clear: both;
