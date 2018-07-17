@@ -1,8 +1,9 @@
+import axios from 'axios';
 import restify from 'restify';
 import { InternalServerError } from 'restify-errors';
-import winston from 'winston';
 import { Person, getBcGovPersonsFromXml } from './xmlToJson';
-import getXml from './mockHttp';
+import logger from './lib/logger';
+import config from './config/secrets';
 import { createVCard } from './jsonToVcard';
 
 // wraps request handling code to ensure next() is always called at the end...
@@ -19,22 +20,15 @@ const respondWith = (callback: restify.RequestHandler): restify.RequestHandler =
 export function applyRoutes(app: restify.Server) {
   // route handlers
   const index: restify.RequestHandler = (req, res, next) => {
-    winston.debug('starting / request');
-    // TODO: replace hardcoded url with env var.
-    getXml('http://dir.gov.bc.ca/downloads/BCGOV_directory.xml', (err, data) => {
-      if (err) {
-        winston.error(err);
-        res.send(new InternalServerError(err));
-      }
-      const persons: Array<Person> = getBcGovPersonsFromXml(data);
-      res.send({ message: JSON.stringify(persons) });
-      winston.debug('completed / request');
+    res.send({
+      message: 'Welcome to QSL Contacts application.'
     });
   };
 
   const echo: restify.RequestHandler = (req, res, next) => {
     res.send(req.params);
   };
+
   const health: restify.RequestHandler = (req, res, next) => {
     res.send({
       app: {
@@ -44,6 +38,22 @@ export function applyRoutes(app: restify.Server) {
         uptime: Math.floor(process.uptime()),
       }
     });
+  };
+
+  const listContacts: restify.RequestHandler = (req, res, next) => {
+    logger.debug('starting / request');
+
+    axios.get(config.app.apiUrl)
+      .then(response => {
+        const xml = response.data;
+        const persons: Person[] = getBcGovPersonsFromXml(xml);
+        res.send(persons);
+        logger.debug('completed / request');
+      })
+      .catch(err => {
+        logger.error(err);
+        res.send(new InternalServerError(err));
+      });
   };
 
   const contactVCard: restify.RequestHandler = (req, res, next) => {
@@ -58,6 +68,7 @@ export function applyRoutes(app: restify.Server) {
   app.get('/', respondWith(index));
   app.get('/echo/:name', respondWith(echo));
   app.get('/health', respondWith(health));
+  app.get('/contacts', respondWith(listContacts));
 
   app.post('/contactvcard', respondWith(contactVCard));
 
