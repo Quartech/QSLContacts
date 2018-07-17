@@ -69,18 +69,20 @@
       border: none;
     }
   
-    a {
+    a, button {
       display: inline-block;
       padding: 0.5rem;
   
       i {
         margin-top: -0.1rem;
         vertical-align: middle;
+        font-size: 1.3rem;
       }
 
       span {
+        margin-right: 0.25rem;
         margin-left: 0.25rem;
-        font-size: 0.9375rem;
+        font-size: 0.875rem;
       }
   
       &::after {
