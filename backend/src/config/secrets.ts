@@ -1,7 +1,7 @@
 const build = () => {
   return ({
     app: {
-      name: process.env.APP_NAME,
+      name: process.env.APP_NAME || 'api',
       version: process.env.APP_VERSION || '1.0.0',
       port: process.env.APP_PORT || 8000,
       environment: process.env.NODE_ENV,

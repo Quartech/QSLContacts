@@ -4,8 +4,5 @@ services:
     ports:
     - 4200:4200
   backend:
-    build:
-      args:
-        - NODE_ENV=development
     ports:
-      - 3000:80
+      - 3000:3000
