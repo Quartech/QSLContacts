@@ -40,9 +40,9 @@ describe('ContactListComponent', () => {
     it('calls getContacts()', () => {
       const contactsRequest = httpMock.expectOne({
         method: 'get',
-        url: `${environment.serverUrl}/contacts`
+        url: `${environment.serverUrl}api/v1/contacts`
       });
-      contactsRequest.flush([{ title: 'some contact title' }]);
+      contactsRequest.flush({ data: [{ title: 'some contact title' }] });
 
       expect(component.contacts.length).toEqual(1);
       expect(component.contacts[0]).toEqual(
