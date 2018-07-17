@@ -1,5 +1,5 @@
 import * as xml from 'xml-js';
-import winston from 'winston';
+import logger from './lib/logger';
 
 export interface Person {
     name: string;
@@ -14,13 +14,13 @@ export interface Person {
  * @param xmlData a string containing the xml contact list.
  */
 export function getBcGovPersonsFromXml(xmlData: string): Person[] {
-    winston.debug('Starting xml parse');
+    logger.debug('Starting xml parse');
     // TODO: evaluate performance impact of removing compact.
     const jsonObject: Object = xml.xml2js(xmlData, {compact: true});
-    winston.debug('Finished parsing xml, building person list.');
+    logger.debug('Finished parsing xml, building person list.');
 
     const persons = recurseBuildPersons(jsonObject, [], false, '');
-    winston.debug('Finished building person list');
+    logger.debug('Finished building person list');
     return persons;
 }
 
@@ -57,7 +57,7 @@ function recurseBuildPersons(jsonData: any, persons: Person[], isOrg: boolean, o
             }
         });
     } catch (err) {
-        winston.error('Failed to parse JSON at current level of recursion with data:\n ' + jsonData + '\nand error: ' + err);
+        logger.error('Failed to parse JSON at current level of recursion with data:\n ' + jsonData + '\nand error: ' + err);
     }
     return persons;
 }
@@ -78,7 +78,7 @@ function getPerson(jsonPersonData: any, organization: string) {
         };
     } catch (err) {
         // TODO: reconsider this as logging happens every time the xml is translated.
-        // winston.verbose('\nfailed to parse person with error: ' + err + ' for person data:\n' + JSON.stringify(jsonPersonData) + '\n\n');
+        // logger.verbose('\nfailed to parse person with error: ' + err + ' for person data:\n' + JSON.stringify(jsonPersonData) + '\n\n');
     }
 }
 

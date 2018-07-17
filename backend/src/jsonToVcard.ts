@@ -43,4 +43,4 @@ function parseName (contactName: string): Names {
   }
   const parts = contactName.split(',').map(part => part.trim());
   return { first: parts[1], last: parts[0] };
-};
+}

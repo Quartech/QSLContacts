@@ -6,6 +6,7 @@ const build = () => {
       port: process.env.APP_PORT || 3000,
       environment: process.env.NODE_ENV || 'development',
       production: process.env.NODE_ENV === 'production',
+      apiUrl: process.env.API_URL || 'http://dir.gov.bc.ca/downloads/BCGOV_directory.xml',
     },
     logging: {
       file: `${process.env.LOG_PATH || './logs'}/app.log`,
