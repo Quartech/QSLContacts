@@ -11,6 +11,13 @@ import { ApiService } from '@app/core';
 export class ContactListComponent implements OnInit {
   public contacts: Array<Contact>;
   public searchString: String;
+  public filteredContacts: number;
+
+  public config = {
+    increment: 10,
+    displayLimit: 20,
+    filterMessage: ''
+  };
   private ContactFilterPipe: ContactFilterPipe;
 
   constructor(private api: ApiService) {
@@ -23,13 +30,9 @@ export class ContactListComponent implements OnInit {
   }
 
   private getContacts() {
-    this.api
-      .getContacts()
-      .subscribe(
-        response => {
-          this.contacts = response.data.map(item => new Contact(item));
-        }
-      );
+    this.api.getContacts().subscribe(response => {
+      this.contacts = response.data.map(item => new Contact(item));
+    });
   }
 
   getContactVCard(contact: Contact) {
@@ -51,5 +54,24 @@ export class ContactListComponent implements OnInit {
 
   clearContactSearch() {
     this.searchString = '';
+    this.config.displayLimit = 20;
+  }
+
+  loadMore() {
+    this.config.displayLimit += this.config.increment;
+  }
+
+  getDisplayedElementCountMessage() {
+    let items = this.contacts;
+    if (this.contacts) {
+      items = this.ContactFilterPipe.transform(items, this.searchString);
+    }
+    if (items.length > 0) {
+      this.config.filterMessage = `Viewing ${Math.min(this.config.displayLimit, items.length)} of ${items.length} Results`;
+    } else {
+      this.config.filterMessage = 'No results found';
+    }
+    this.filteredContacts = items.length;
+    return this.config.filterMessage;
   }
 }

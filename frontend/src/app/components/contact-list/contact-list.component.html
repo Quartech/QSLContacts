@@ -11,34 +11,43 @@
 
 <!-- Contact List -->
 <div class="contact-list">
+
+  <div>
+    <span class="pagination__result-count" [innerHTML]="getDisplayedElementCountMessage()"></span>
+  </div>
+
   <ul class="list-group">
-    <li *ngFor="let contact of contacts | contactFilter : searchString" class="contact-card list-group-item">
-      <div class="contact-card__details">
-        <div class="contact-card__name">{{contact.name}}</div>
-        <div class="contact-card__org">{{contact.title}}, {{contact.organization}}</div>
-      </div>
-      <div class="contact-card__actions">
-        <a class="btn btn-outline-primary" href="mailto:{{contact.email}}">
-          <i class="material-icons">email</i>
-          <span class="btn-label">{{contact.email}}</span>
-        </a>
-        <a class="btn btn-outline-primary" href="tel:{{contact.phone}}">
-          <i class="material-icons">phone</i>
-          <span class="btn-label">{{contact.phone}}</span>
-        </a>
-        <button class="btn btn-outline-primary" (click)="getContactVCard(contact)">
-          <i class="material-icons">
-            perm_contact_calendar
-          </i>
-        </button>
-      </div>
-    </li>
+    <div *ngFor="let contact of contacts | contactFilter: searchString; let i=index">
+      <li *ngIf="i < config.displayLimit" class="contact-card list-group-item">
+          <div class="contact-card__details">
+            <div class="contact-card__name">{{contact.name}}</div>
+            <div class="contact-card__org">{{contact.title}}, {{contact.organization}}</div>
+          </div>
+          <div class="contact-card__actions">
+            <a class="btn btn-outline-primary" href="mailto:{{contact.email}}">
+              <i class="material-icons">email</i>
+              <span class="btn-label">{{contact.email}}</span>
+            </a>
+            <a class="btn btn-outline-primary" href="tel:{{contact.phone}}">
+              <i class="material-icons">phone</i>
+              <span class="btn-label">{{contact.phone}}</span>
+            </a>
+            <button class="btn btn-outline-primary" (click)="getContactVCard(contact)">
+              <i class="material-icons">
+                perm_contact_calendar
+              </i>
+            </button>
+          </div>
+      </li>
+    </div>
   </ul>
-  <!-- Pagination Button - Load More Container
-  TODO: Render 100? Contacts and provide ability for user to render more when requested
-  TODO: Hide the load more container if results < 100
-  <div class="load-more-container">
+
+  <div>
+    <span [hidden]="filteredContacts <= 0" class="pagination__result-count" [innerHTML]="config.filterMessage"></span>
+  </div>
+
+  <div class="load-more-container" (click)="loadMore()">
     <button class="btn btn-primary">Load More Contacts</button>
   </div>
-  -->
+
 </div>
