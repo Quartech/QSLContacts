@@ -66,16 +66,6 @@ export class ApiRequest {
   }
 
   /**
-   * Construct a PUT request which interprets the body as JSON and returns it.
-   *
-   * @return an `Observable` of the body as type `T`.
-   */
-  put<T>(path: string, body: any | null, options?: HttpClientOptions) {
-    const url = buildApiPath(path);
-    return this.http.put<T>(url, body, options);
-  }
-
-  /**
    * Construct a DELETE request which interprets the body as JSON and returns it.
    *
    * @return an `Observable` of the body as type `T`.
