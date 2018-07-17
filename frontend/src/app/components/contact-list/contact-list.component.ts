@@ -26,7 +26,9 @@ export class ContactListComponent implements OnInit {
     this.api
       .getContacts()
       .subscribe(
-        response => (this.contacts = response.map(item => new Contact(item)))
+        response => {
+          this.contacts = response.data.map(item => new Contact(item));
+        }
       );
   }
 
@@ -34,15 +36,15 @@ export class ContactListComponent implements OnInit {
     this.api
       .getContactVCard(contact)
       .subscribe(
-        response => this.downloadVCard(response.data),
+        response => this.downloadVCard(contact, response.data),
         error => console.log(error)
       );
   }
 
-  downloadVCard(vcard: string) {
+  downloadVCard(contact: Contact, vcard: string) {
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([vcard], { type: 'text/vcard' }));
-    a.download = 'vcard.vcf';
+    a.download = `${contact.email}.vcf`;
     a.click();
     a.remove();
   }

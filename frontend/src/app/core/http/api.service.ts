@@ -13,14 +13,18 @@ export class ApiService {
   constructor(private api: ApiRequest) {}
 
   getContacts() {
-    return this.api.get<Array<Contact>>('/api/v1/contacts');
+    return this.api.get<ContactsResponse>('/api/v1/contacts');
   }
 
   getContactVCard(contact: Contact) {
-    return this.api.post<ContactResponse>('/api/v1/contactvcard', contact);
+    return this.api.post<ContactVCardResponse>('/api/v1/contactvcard', contact);
   }
 }
 
-interface ContactResponse {
+interface ContactsResponse {
+  data: Array<string>;
+}
+
+interface ContactVCardResponse {
   data: string;
 }
