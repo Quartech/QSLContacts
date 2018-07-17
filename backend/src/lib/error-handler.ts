@@ -1,5 +1,6 @@
 
 import restify from 'restify';
+import logger from './logger';
 
 /**
  * Registers an error handler with the server
@@ -37,6 +38,7 @@ export function registerErrorHandler(server: restify.Server) {
   });
 
   server.on('restifyError', (req, res, err) => {
+    logger.error(err);
     res.send(httpStatusCodes.INTERNAL_SERVER_ERROR, err);
   });
 }
