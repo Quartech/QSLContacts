@@ -1,7 +1,7 @@
 version: '3.6'
 services:
   frontend:
-    container_name: frontend-container
+    container_name: frontend-qsl-contacts
     build:
       context: .
     volumes:
