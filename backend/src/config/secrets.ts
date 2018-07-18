@@ -10,8 +10,8 @@ const build = () => {
 
     },
     cache: {
-      cacheTtl: process.env.CACHE_TTL || 3600,
-      cacheInterval: process.env.CACHE_INTERVAL || 60,
+      cacheTtl: parseInt(process.env.CACHE_TTL) || 3600,
+      cacheInterval: parseInt(process.env.CACHE_INTERVAL) || 60,
     },
     logging: {
       file: `${process.env.LOG_PATH || './logs'}/app.log`,
