@@ -47,10 +47,10 @@
         </ul>
       </li>
     </ng-container>
-    <li class="pagination__result-count list-group-item" [innerHTML]="getFilteredContactsCountMessage()" [hidden]="filteredContacts <= 0"></li>
+    <li class="pagination__result-count list-group-item" [innerHTML]="getFilteredContactsCountMessage()" [hidden]="filteredContacts.length <= 0"></li>
   </ul>
 
-  <div class="load-more-container mt-3" [hidden]="filteredContacts <= 0" (click)="loadMore()">
+  <div class="load-more-container mt-3" [hidden]="filteredContacts.length <= 0" (click)="loadMore()">
     <button class="btn btn-sm btn-primary">Load More Contacts</button>
   </div>
 
