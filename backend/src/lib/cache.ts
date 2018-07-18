@@ -1,6 +1,7 @@
 import NodeCache from 'node-cache';
 import logger from './logger';
 import config from '../config/secrets';
+import { Person } from '../xmlToJson';
 
 /**
  * Simple 2-level cache implementation that stores the contacts response
@@ -12,7 +13,7 @@ export default class ResponseCache {
     private checkInterval: number = config.cache.cacheInterval;
     private key = 'contacts';
 
-    private offlineResponse: string;
+    private offlineResponse: Person[];
     private static cacheInstance: ResponseCache;
 
     private constructor () {
@@ -30,7 +31,7 @@ export default class ResponseCache {
      * set the contacts response within the cache.
      * @param response
      */
-    public setCachedResponse(response: string): void {
+    public setCachedResponse(response: Person[]): void {
         if (!response) {
             throw(new TypeError('empty responses should not be cached.'));
         }
@@ -47,8 +48,8 @@ export default class ResponseCache {
     /**
      * Get the cached contacts Json response.
      */
-    public getCachedResponse(): string {
-        const cached: string = this.cache.get(this.key);
+    public getCachedResponse(): Person[] {
+        const cached: Person[] = this.cache.get(this.key);
         return cached;
     }
 
@@ -56,7 +57,7 @@ export default class ResponseCache {
      * TODO: Consider using fs here.
      * Get the stored offline contacts Json response from memory.
      */
-    public getOfflineResponse(): string {
+    public getOfflineResponse(): Person[] {
         return this.offlineResponse;
     }
 }

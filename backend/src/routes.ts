@@ -66,8 +66,8 @@ export function applyRoutes(app: restify.Server) {
    * Obtains the contacts Json response from the cache, or queries/converts the BCGOV xml.
    * @param callback will contain the data if processing is successful, else error.
    */
-  function handleContactsJsonResponse (): Promise<string> {
-    const cachedResponse: string = ResponseCache.getInstance().getCachedResponse();
+  function handleContactsJsonResponse (): Promise<Person[]> {
+    const cachedResponse: Person[] = ResponseCache.getInstance().getCachedResponse();
     if (cachedResponse) {
       logger.debug('Returning cached contacts api response.');
       return Promise.resolve(cachedResponse);
@@ -83,12 +83,12 @@ export function applyRoutes(app: restify.Server) {
    * @param xmlData the downloaded xml data
    * @param callback will contain the data if processing is successful, else error.
    */
-  function handleContactsXml(xmlResponse): string {
+  function handleContactsXml(xmlResponse): Person[] {
     const cache: ResponseCache = ResponseCache.getInstance();
     let xmlErr: string;
     if (xmlResponse && xmlResponse.data) {
       try {
-        const persons: string = JSON.stringify(getBcGovPersonsFromXml(xmlResponse.data));
+        const persons: Person[] = getBcGovPersonsFromXml(xmlResponse.data);
         cache.setCachedResponse(persons);
         return persons;
       } catch (parseError) {
