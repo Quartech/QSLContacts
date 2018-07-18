@@ -79,3 +79,11 @@ As a user, I want to be able to browse the contact list even when access to the 
 1. The submission must be capable of running on any docker-enabled platform
 2. Users must be able to run the application on modern browsers, including Microsoft Internet Explorer 11.0 and up.
 3. You must update the repository’s README file to include any instructions required for the code challenge evaluators to build and run your team’s application.
+
+---
+
+# How to run the application
+
+To run the application in production mode, run ```start.sh -p``` in this directory. When the images are built and the contaniers have been started, the application will be accessible at http://localhost:4200
+
+To stop the ocntainers, run ```stop.sh``` in this directory.
