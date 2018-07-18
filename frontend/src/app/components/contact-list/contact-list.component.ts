@@ -60,7 +60,7 @@ export class ContactListComponent implements OnInit {
 
   filterContacts() {
     this.searchString = this.searchString.trim();
-    if (this.searchString.length > 3) {
+    if (this.searchString.length > 2) {
       this.filteredContacts = this.ContactFilterPipe.transform(this.allContacts, this.searchString);
       this.displayedContacts = this.filteredContacts.slice(0, this.config.displayLimit);
     } else {
