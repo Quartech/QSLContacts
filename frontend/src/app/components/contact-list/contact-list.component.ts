@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Contact } from '@app/models/contact';
 import { ContactFilterPipe } from '../../pipes/contact-filter.pipe';
 import { ApiService } from '@app/core';
@@ -32,8 +32,8 @@ export class ContactListComponent implements OnInit {
     // load contacts
     this.api.getContacts().subscribe(response => {
       this.allContacts = response.data.map(item => new Contact(item));
-      this.filteredContacts = this.allContacts;
-      this.displayedContacts = this.allContacts.slice(0, this.config.displayLimit);
+      this.resetFilteredContacts();
+      this.resetDisplayedContacts();
     });
   }
 
@@ -50,23 +50,36 @@ export class ContactListComponent implements OnInit {
   clearContactSearch() {
     this.searchString = '';
     this.config.displayLimit = 20;
-    this.displayedContacts = this.allContacts.slice(0, this.config.displayLimit);
+    this.resetFilteredContacts();
+    this.resetDisplayedContacts();
   }
 
   loadMore() {
     this.config.displayLimit += this.config.increment;
-    this.displayedContacts = this.filteredContacts.slice(0, this.config.displayLimit);
+    this.filterDisplayedContacts();
   }
 
   filterContacts() {
     this.searchString = this.searchString.trim();
     if (this.searchString.length > 2) {
       this.filteredContacts = this.ContactFilterPipe.transform(this.allContacts, this.searchString);
-      this.displayedContacts = this.filteredContacts.slice(0, this.config.displayLimit);
+      this.filterDisplayedContacts();
     } else {
-      this.displayedContacts = this.allContacts.slice(0, this.config.displayLimit);
-      this.filteredContacts = this.allContacts;
+      this.resetFilteredContacts();
+      this.resetDisplayedContacts();
     }
+  }
+
+  resetFilteredContacts() {
+    this.filteredContacts = this.allContacts;
+  }
+
+  resetDisplayedContacts() {
+    this.displayedContacts = this.allContacts.slice(0, this.config.displayLimit);
+  }
+
+  filterDisplayedContacts() {
+    this.displayedContacts = this.filteredContacts.slice(0, this.config.displayLimit);
   }
 
   getFilteredContactsCountMessage() {
