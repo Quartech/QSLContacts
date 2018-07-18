@@ -10,15 +10,18 @@ import { saveAs } from 'file-saver/FileSaver';
   styleUrls: ['./contact-list.component.scss']
 })
 export class ContactListComponent implements OnInit {
-  public contacts: Array<Contact>;
-  public searchString: String;
-  public filteredContacts: number;
+  public allContacts: Array<Contact> = [];
+  public displayedContacts: Array<Contact> = [];
+  public filteredContacts: Array<Contact> = [];
+
+  public searchString: string;
 
   public config = {
     increment: 10,
     displayLimit: 20,
     filterMessage: ''
   };
+
   private ContactFilterPipe: ContactFilterPipe;
 
   constructor(private api: ApiService) {
@@ -26,52 +29,53 @@ export class ContactListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.contacts = new Array<Contact>();
-    this.getContacts();
-  }
-
-  private getContacts() {
+    // load contacts
     this.api.getContacts().subscribe(response => {
-      this.contacts = response.data.map(item => new Contact(item));
+      this.allContacts = response.data.map(item => new Contact(item));
+      this.filteredContacts = this.allContacts;
+      this.displayedContacts = this.allContacts.slice(0, this.config.displayLimit);
     });
   }
 
+  // convert contact to VCard and download
   getContactVCard(contact: Contact) {
     this.api
       .getContactVCard(contact)
       .subscribe(
-        response => this.downloadVCard(contact, response.data),
+        response => saveAs(new Blob([response.data], { type: 'text/plain' }), `${contact.email}.vcf`),
         error => console.log(error)
       );
-  }
-
-  downloadVCard(contact: Contact, vcard: string) {
-    saveAs(new Blob([vcard], { type: 'text/plain' }), `${contact.email}.vcf`);
   }
 
   clearContactSearch() {
     this.searchString = '';
     this.config.displayLimit = 20;
+    this.displayedContacts = this.allContacts.slice(0, this.config.displayLimit);
   }
 
   loadMore() {
     this.config.displayLimit += this.config.increment;
+    this.displayedContacts = this.filteredContacts.slice(0, this.config.displayLimit);
   }
 
-  getDisplayedElementCountMessage() {
-    let items = this.contacts;
-    if (this.contacts) {
-      items = this.ContactFilterPipe.transform(items, this.searchString);
+  filterContacts() {
+    this.searchString = this.searchString.trim();
+    if (this.searchString.length > 3) {
+      this.filteredContacts = this.ContactFilterPipe.transform(this.allContacts, this.searchString);
+      this.displayedContacts = this.filteredContacts.slice(0, this.config.displayLimit);
+    } else {
+      this.displayedContacts = this.allContacts.slice(0, this.config.displayLimit);
+      this.filteredContacts = this.allContacts;
     }
-    if (items.length > 0) {
-      this.config.filterMessage = `Viewing ${Math.min(
-        this.config.displayLimit,
-        items.length
-      )} of ${items.length} Results`;
+  }
+
+  getFilteredContactsCountMessage() {
+    if (this.displayedContacts.length > 0) {
+      this.config.filterMessage =
+        `Viewing ${Math.min(this.config.displayLimit, this.filteredContacts.length)} of ${this.filteredContacts.length} Results`;
     } else {
       this.config.filterMessage = 'No results found';
     }
-    this.filteredContacts = items.length;
     return this.config.filterMessage;
   }
 }

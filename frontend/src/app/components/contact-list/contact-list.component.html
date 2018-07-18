@@ -2,7 +2,7 @@
 <!-- Search-->
 <div class="searchbox">
   <div class="searchbox__input">
-    <input class="form-control" type="text" placeholder="Search Directory" id="contactSearchInput" [(ngModel)]="searchString" />
+    <input class="form-control" type="text" placeholder="Search Directory" id="contactSearchInput" [ngModel]="searchString" (ngModelChange)="searchString=$event; filterContacts()"/>
     <button role="button" class="clear-btn btn btn-light" id="contactSearchBtn" (click)="clearContactSearch()">
       <i class="material-icons">close</i>
     </button>
@@ -12,11 +12,10 @@
 <!-- Contact List -->
 <div class="contact-list">
 
-
   <ul class="list-group">
-    <li class="pagination__result-count list-group-item" [innerHTML]="getDisplayedElementCountMessage()"></li>
-    <ng-container *ngFor="let contact of contacts | contactFilter: searchString; let i=index">
-      <li *ngIf="i < config.displayLimit" class="contact-card list-group-item">
+    <li class="pagination__result-count list-group-item" [innerHTML]="getFilteredContactsCountMessage()"></li>
+    <ng-container *ngFor="let contact of displayedContacts">
+      <li class="contact-card list-group-item">
         <div class="contact-card__details">
           <div class="contact-card__name">{{contact.name}}</div>
           <div class="contact-card__title-org-container">
@@ -48,7 +47,7 @@
         </ul>
       </li>
     </ng-container>
-    <li class="pagination__result-count list-group-item" [innerHTML]="config.filterMessage" [hidden]="filteredContacts <= 0"></li>
+    <li class="pagination__result-count list-group-item" [innerHTML]="getFilteredContactsCountMessage()" [hidden]="filteredContacts <= 0"></li>
   </ul>
 
   <div class="load-more-container mt-3" [hidden]="filteredContacts <= 0" (click)="loadMore()">
