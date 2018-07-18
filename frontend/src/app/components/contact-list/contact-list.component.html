@@ -50,7 +50,7 @@
     <li class="pagination__result-count list-group-item" [innerHTML]="getFilteredContactsCountMessage()" [hidden]="filteredContacts.length <= 0"></li>
   </ul>
 
-  <div class="load-more-container mt-3" [hidden]="filteredContacts.length <= 0" (click)="loadMore()">
+  <div class="load-more-container mt-3" [hidden]="filteredContacts.length <= 0 || filteredContacts.length <= config.displayLimit" (click)="loadMore()">
     <button class="btn btn-sm btn-primary">Load More Contacts</button>
   </div>
 
