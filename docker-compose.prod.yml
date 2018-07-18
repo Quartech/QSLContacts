@@ -1,8 +1,10 @@
 version: '3.6'
 services:
-  backend:
-    ports:
-      - '80:80'
   frontend:
     build:
       dockerfile: Dockerfile-prod
+    ports:
+      - '80:80'
+  backend:
+    ports:
+      - '3000:3000'

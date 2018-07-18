@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Contact } from '@app/models/contact';
 import { ContactFilterPipe } from '../../pipes/contact-filter.pipe';
 import { ApiService } from '@app/core';
+import { saveAs } from 'file-saver/FileSaver';
 
 @Component({
   selector: 'app-contact-list',
@@ -45,11 +46,7 @@ export class ContactListComponent implements OnInit {
   }
 
   downloadVCard(contact: Contact, vcard: string) {
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([vcard], { type: 'text/vcard' }));
-    a.download = `${contact.email}.vcf`;
-    a.click();
-    a.remove();
+    saveAs(new Blob([vcard], { type: 'text/plain' }), `${contact.email}.vcf`);
   }
 
   clearContactSearch() {
@@ -67,7 +64,10 @@ export class ContactListComponent implements OnInit {
       items = this.ContactFilterPipe.transform(items, this.searchString);
     }
     if (items.length > 0) {
-      this.config.filterMessage = `Viewing ${Math.min(this.config.displayLimit, items.length)} of ${items.length} Results`;
+      this.config.filterMessage = `Viewing ${Math.min(
+        this.config.displayLimit,
+        items.length
+      )} of ${items.length} Results`;
     } else {
       this.config.filterMessage = 'No results found';
     }
