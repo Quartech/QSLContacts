@@ -14,6 +14,7 @@ EOF
 
 # Bring down any previously running containers
 docker-compose down
+docker rmi frontend-qsl-contacts backend-qsl-contacts
 
 if [ "$1" = "-p" ];
 then
