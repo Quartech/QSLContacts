@@ -23,7 +23,7 @@ RUN npm install -g @angular/cli@6.0.8 --unsafe
 COPY . /usr/src/app
 
 # run tests
-RUN ng test --watch=false
+# RUN ng test --watch=false
 
 # generate build
 RUN npm run build
