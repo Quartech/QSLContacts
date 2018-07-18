@@ -7,6 +7,11 @@ const build = () => {
       environment: process.env.NODE_ENV || 'development',
       production: process.env.NODE_ENV === 'production',
       apiUrl: process.env.API_URL || 'http://dir.gov.bc.ca/downloads/BCGOV_directory.xml',
+
+    },
+    cache: {
+      cacheTtl: process.env.CACHE_TTL || 3600,
+      cacheInterval: process.env.CACHE_INTERVAL || 60,
     },
     logging: {
       file: `${process.env.LOG_PATH || './logs'}/app.log`,

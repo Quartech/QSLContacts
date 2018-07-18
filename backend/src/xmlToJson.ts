@@ -43,7 +43,8 @@ function recurseBuildPersons(jsonData: any, persons: Person[], isOrg: boolean, o
             if (Array.isArray(jsonData[key])) {
                 if (key === 'PERSON') {
                     jsonData[key].forEach((personJson: Object) => {
-                        persons.push(getPerson(personJson, organization));
+                        const person: Person = getPerson(personJson, organization);
+                        if (person != undefined) persons.push(person);
                     });
                 }
                 jsonData[key].forEach((jsonArrayElem: any) => {
@@ -51,9 +52,10 @@ function recurseBuildPersons(jsonData: any, persons: Person[], isOrg: boolean, o
                 });
             } else if (typeof jsonData[key] === 'object') {
                 if (key === 'PERSON') {
-                    persons.push(getPerson(jsonData[key], organization));
+                    const person: Person = getPerson(jsonData[key], organization);
+                    if (person != undefined) persons.push(person);
                 }
-                return recurseBuildPersons(jsonData[key], persons, isOrg, organization);
+                recurseBuildPersons(jsonData[key], persons, isOrg, organization);
             }
         });
     } catch (err) {
@@ -67,7 +69,7 @@ function recurseBuildPersons(jsonData: any, persons: Person[], isOrg: boolean, o
  * @param jsonPersonData
  * @param organization The name of the organization at the current level of recursion.
  */
-function getPerson(jsonPersonData: any, organization: string) {
+function getPerson(jsonPersonData: any, organization: string): Person {
     try {
         return {
             name: getName(jsonPersonData['NAME']),
@@ -78,7 +80,7 @@ function getPerson(jsonPersonData: any, organization: string) {
         };
     } catch (err) {
         // TODO: reconsider this as logging happens every time the xml is translated.
-        // logger.verbose('\nfailed to parse person with error: ' + err + ' for person data:\n' + JSON.stringify(jsonPersonData) + '\n\n');
+        logger.verbose('\nfailed to parse person with error: ' + err + ' for person data:\n' + JSON.stringify(jsonPersonData) + '\n\n');
     }
 }
 
@@ -87,8 +89,8 @@ function getPerson(jsonPersonData: any, organization: string) {
  * @param nameJson JSON object containing Person name fields.
  * @throws if nameJson is undefined.
  */
-function getName(nameJson: any) {
-    if (nameJson === undefined) {
+function getName(nameJson: any): string {
+    if (nameJson == undefined) {
         throw new Error('undefined person name field');
     }
     const name: string = nameJson['_text'];
@@ -104,8 +106,8 @@ function getName(nameJson: any) {
  * Get the title text value from the title JSON data, or ''.
  * @param titleJson
  */
-function getTitle(titleJson: any) {
-    if (titleJson === undefined) {
+function getTitle(titleJson: any): string {
+    if (titleJson == undefined) {
         return '';
     }
     return titleJson['_text'] || '';
@@ -117,9 +119,9 @@ function getTitle(titleJson: any) {
  * @param fieldName The 'TYPE' of contact data that should be returned.
  * @throws If contactJson is undefined.
  */
-function getContactField(contactJson: any, fieldName: string) {
+function getContactField(contactJson: any, fieldName: string): string {
 
-    if (contactJson === undefined) {
+    if (contactJson == undefined) {
         throw new Error('no contact data for person');
     } else if (Array.isArray(contactJson)) {
         let text: string = '';
@@ -138,8 +140,8 @@ function getContactField(contactJson: any, fieldName: string) {
  * Get the organization's name attribute from the passed JSON data if the passed data is an organization.
  * @param jsonData Organization JSON object.
  */
-function getOrganizationName(organizationJson: any) {
-    if (organizationJson === undefined) {
+function getOrganizationName(organizationJson: any): string {
+    if (organizationJson == undefined) {
         return '';
     }
     const organizationAttr: any = organizationJson['_attributes'];
