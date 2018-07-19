@@ -62,7 +62,6 @@ export function applyRoutes(app: restify.Server) {
 
 
   /**
-   * TODO: refactor below methods into promises.
    * Obtains the contacts Json response from the cache, or queries/converts the BCGOV xml.
    * @param callback will contain the data if processing is successful, else error.
    */
