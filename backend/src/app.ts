@@ -44,8 +44,8 @@ const cors = corsMiddleware({
 app.pre(cors.preflight);
 app.use(cors.actual);
 
-// TODO: enable gzip
-// ...
+// enable gzip
+app.use(restify.plugins.gzipResponse());
 
 // TODO: initialize validator for all requests
 // ...
