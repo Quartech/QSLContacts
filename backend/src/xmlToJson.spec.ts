@@ -1,9 +1,9 @@
 import 'mocha';
 import * as chai from 'chai';
-import * as xmlToJson from '../xmlToJson';
+import * as xmlToJson from './xmlToJson';
 import * as fs from 'fs-extra';
-const inFile = './src/specs/mocks/mockInput.xml';
-const outFile = './src/specs/mocks/mockOutput.json';
+const inFile = './tests/mocks/mockInput.xml';
+const outFile = './tests/mocks/mockOutput.json';
 
 describe('xmlToJson', function () {
   describe('#getBcGovPersonsFromXml()', function () {
