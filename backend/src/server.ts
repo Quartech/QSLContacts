@@ -3,7 +3,6 @@ import config from './config/secrets';
 import app from './app';
 import logger from './lib/logger';
 import { registerErrorHandler } from './lib/error-handler';
-import winston from 'winston';
 
 // ERROR HANDLING
 // =============================================================================

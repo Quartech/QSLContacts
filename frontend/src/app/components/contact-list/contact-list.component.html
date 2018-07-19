@@ -2,7 +2,7 @@
 <!-- Search-->
 <div class="searchbox">
   <div class="searchbox__input">
-    <input class="form-control" type="text" placeholder="Search Directory" id="contactSearchInput" [(ngModel)]="searchString" />
+    <input class="form-control" type="text" placeholder="Search Directory" id="contactSearchInput" [ngModel]="searchString" (ngModelChange)="searchString=$event; filterContacts()"/>
     <button role="button" class="clear-btn btn btn-light" id="contactSearchBtn" (click)="clearContactSearch()">
       <i class="material-icons">close</i>
     </button>
@@ -12,42 +12,46 @@
 <!-- Contact List -->
 <div class="contact-list">
 
-  <div>
-    <span class="pagination__result-count" [innerHTML]="getDisplayedElementCountMessage()"></span>
-  </div>
-
   <ul class="list-group">
-    <div *ngFor="let contact of contacts | contactFilter: searchString; let i=index">
-      <li *ngIf="i < config.displayLimit" class="contact-card list-group-item">
-          <div class="contact-card__details">
-            <div class="contact-card__name">{{contact.name}}</div>
-            <div class="contact-card__org">{{contact.title}}, {{contact.organization}}</div>
+    <li class="pagination__result-count list-group-item" [innerHTML]="getFilteredContactsCountMessage()"></li>
+    <ng-container *ngFor="let contact of displayedContacts">
+      <li class="contact-card list-group-item">
+        <div class="contact-card__details">
+          <div class="contact-card__name">{{contact.name}}</div>
+          <div class="contact-card__title-org-container">
+            <span class="contact-card__title" *ngIf="contact.title">{{contact.title}}</span>
+            <span class="contact-card__org" *ngIf="contact.organization">{{contact.organization}}</span>
           </div>
-          <div class="contact-card__actions">
-            <a class="btn btn-outline-primary" href="mailto:{{contact.email}}">
+        </div>
+        <ul class="contact-card__actions">
+          <li class="email action-item-container">
+            <a class="btn btn-outline-primary" title="Email" href="mailto:{{contact.email}}">
               <i class="material-icons">email</i>
               <span class="btn-label">{{contact.email}}</span>
             </a>
-            <a class="btn btn-outline-primary" href="tel:{{contact.phone}}">
+          </li>
+          <li class="phone action-item-container">
+            <a class="btn btn-outline-primary" title="Call" href="tel:{{contact.phone}}">
               <i class="material-icons">phone</i>
               <span class="btn-label">{{contact.phone}}</span>
             </a>
-            <button class="btn btn-outline-primary" (click)="getContactVCard(contact)">
+          </li>
+          <li class="export action-item-container">
+            <button class="btn btn-outline-primary" title="Export VCard" (click)="getContactVCard(contact)">
               <i class="material-icons">
                 perm_contact_calendar
               </i>
+              <span class="btn-label">Export VCard</span>
             </button>
-          </div>
+          </li>
+        </ul>
       </li>
-    </div>
+    </ng-container>
+    <li class="pagination__result-count list-group-item" [innerHTML]="getFilteredContactsCountMessage()" [hidden]="filteredContacts.length <= 0"></li>
   </ul>
 
-  <div>
-    <span [hidden]="filteredContacts <= 0" class="pagination__result-count" [innerHTML]="config.filterMessage"></span>
-  </div>
-
-  <div class="load-more-container" (click)="loadMore()">
-    <button class="btn btn-primary">Load More Contacts</button>
+  <div class="load-more-container mt-3" [hidden]="filteredContacts.length <= 0 || filteredContacts.length <= config.displayLimit" (click)="loadMore()">
+    <button class="btn btn-sm btn-primary">Load More Contacts</button>
   </div>
 
 </div>

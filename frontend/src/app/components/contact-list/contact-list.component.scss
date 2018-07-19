@@ -56,68 +56,133 @@
 
 .contact-card {
   display: flex;
+  padding: 1rem;
   flex-direction: row;
 
   &__details {
+    overflow: hidden;
     flex: 1 1 auto;
   }
 
+  &__title-org-container {
+    span {
+      display: block;
+    }
+  }
+
   &__name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     font-size: 1rem;
     font-weight: bold;
   }
 
+  &__title,
   &__org {
-    color: #777;
     font-size: 0.875rem;
   }
 
-  &__actions {
-    padding: 0.25rem 0;
+  &__org {
+    color: #777;
+  }
+}
 
-    .btn-outline-primary {
-      border: none;
+.contact-card__actions {
+  margin-top: -0.35rem;
+  margin-right: -0.5rem;
+  padding: 0;
+  white-space: nowrap;
+  list-style-type: none;
+
+  .btn-outline-primary {
+    border: none;
+  }
+
+  li {
+    display: inline-block;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.35rem 0.5rem;
+
+    + .btn {
+      margin-left: 0.25rem;
     }
 
-    a, button {
-      display: inline-block;
-      padding: 0.5rem;
+    i {
+      margin-top: -0.1rem;
+      vertical-align: middle;
+      font-size: 1.3rem;
+    }
 
-      i {
-        margin-top: -0.1rem;
-        vertical-align: middle;
-        font-size: 1.3rem;
-      }
+    span {
+      margin-right: 0.25rem;
+      margin-left: 0.25rem;
+      font-size: 0.875rem;
+    }
 
-      span {
-        margin-right: 0.25rem;
-        margin-left: 0.25rem;
-        font-size: 0.875rem;
-      }
+    .btn-label {
+      display: none;
+    }
 
-      &::after {
-        display: block;
-        clear: both;
-      }
+    &::after {
+      display: block;
+      clear: both;
     }
   }
 }
 
 .load-more-container {
-  padding: 1.5rem;
   text-align: center;
 
   .btn {
-    padding: 0.75rem;
+    padding: 0.5rem;
     text-transform: uppercase;
-    font-size: 0.9375rem;
   }
 }
 
-@media (max-width: 1024px) {
-  .contact-card__actions {
-    .btn-label {
-      display: none;
+.pagination__result-count {
+  padding: 1rem;
+  font-size: 0.9375rem;
+}
+
+@media (min-width: 1024px) {
+  .contact-card__actions {  
+    li {
+      float: left;
+      overflow: hidden;
+
+      + li {
+        margin-left: 0.25rem;
+      }
+    }
+    
+    .btn {
+      max-width: 100%;
+      overflow: hidden;
+      text-align: left;
+      text-overflow: ellipsis;
+
+      .btn-label {
+        display: inline;
+      }
+
+      i {
+        margin-right: 0.25rem;
+        font-size: 1.15rem;
+      }
+    }
+
+    .email {
+      width: 15rem;
+    }
+
+    .phone {
+      .btn {
+        width: 10rem;
+      }
     }
   }
 }

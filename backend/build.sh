@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t backend .
+docker build -t backend-qsl-contacts .
