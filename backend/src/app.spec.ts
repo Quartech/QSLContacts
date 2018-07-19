@@ -1,7 +1,7 @@
 
 import 'mocha';
 import supertest from 'supertest';
-import app from '../app';
+import app from './app';
 
 describe('App', () => {
   it('works', () =>
