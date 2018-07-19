@@ -18,11 +18,11 @@ export class ContactFilterPipe implements PipeTransform {
         searchTerms.forEach(term => {
           isMatch =
             isMatch &&
-            (item.name.toLowerCase().includes(term) ||
-              item.title.toLowerCase().includes(term) ||
-              item.organization.toLowerCase().includes(term) ||
-              item.email.toLowerCase().includes(term) ||
-              item.phone.toLowerCase().includes(term));
+            (item.name.toLowerCase().includes(term.toLowerCase()) ||
+              item.title.toLowerCase().includes(term.toLowerCase()) ||
+              item.organization.toLowerCase().includes(term.toLowerCase()) ||
+              item.email.toLowerCase().includes(term.toLowerCase()) ||
+              item.phone.toLowerCase().includes(term.toLowerCase()));
         });
         return isMatch;
       });
