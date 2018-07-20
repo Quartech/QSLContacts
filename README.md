@@ -84,6 +84,6 @@ As a user, I want to be able to browse the contact list even when access to the 
 
 # How to run the application
 
-To run the application in production mode, run ```start.sh -p``` in this directory. When the images are built and the contaniers have been started, the application will be accessible at http://localhost:4200
+To run the application in production mode, run ```start.sh -p``` in this directory. When the images are built and the containers have been started, the application will be accessible at http://localhost.
 
 To stop the containers, run ```stop.sh``` in this directory.
