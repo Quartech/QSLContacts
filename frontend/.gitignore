@@ -8,6 +8,12 @@
 # dependencies
 /node_modules
 
+# Optional npm cache directory
+.npm
+
+# npm lock file
+package-lock.json
+
 # IDEs and editors
 /.idea
 .project
@@ -36,4 +42,9 @@ testem.log
 
 # System Files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
