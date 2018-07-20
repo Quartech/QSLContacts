@@ -5,6 +5,3 @@ services:
       dockerfile: Dockerfile-prod
     ports:
       - '80:80'
-  backend:
-    ports:
-      - '3000:3000'
