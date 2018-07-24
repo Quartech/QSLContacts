@@ -5,3 +5,9 @@ services:
       dockerfile: Dockerfile-prod
     ports:
       - '80:80'
+      - '443:443'
+    volumes:
+      - ../letsencrypt/well-known:/usr/share/nginx/html/www/letsencrypt
+      # This path is relative to where the docker-compose is being run from (home/git/QSLContacts)
+      # Long term an absolute path via an environment variable, or similar, would be more ideal.
+      - ../../../etc/letsencrypt/:/etc/letsencrypt/
