@@ -7,7 +7,7 @@ services:
       - '80:80'
       - '443:443'
     volumes:
-      - ../letsencrypt/well-known:/usr/share/nginx/html/www/letsencrypt
-      # This path is relative to where the docker-compose is being run from (home/git/QSLContacts)
-      # Long term an absolute path via an environment variable, or similar, would be more ideal.
-      - ../../../etc/letsencrypt/:/etc/letsencrypt/
+      # This path depends on where the docker-compose file is being executed from and is only needed when creating/renewing the https ssl certs.
+      # - /home/git/letsencrypt/well-known:/usr/share/nginx/html/www/letsencrypt
+      # The created/renewed http ssl certs live here.
+      - /etc/letsencrypt/:/etc/letsencrypt/
