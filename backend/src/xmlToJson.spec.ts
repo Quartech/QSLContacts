@@ -5,9 +5,9 @@ import * as fs from 'fs-extra';
 const inFile = './tests/mocks/mockInput.xml';
 const outFile = './tests/mocks/mockOutput.json';
 
-describe('xmlToJson', function () {
-  describe('#getBcGovPersonsFromXml()', function () {
-    it('should throw an exception if passed undefined', function () {
+describe('xmlToJson', function() {
+  describe('#getBcGovPersonsFromXml()', function() {
+    it('should throw an exception if passed undefined', function() {
       chai.expect(() => xmlToJson.getBcGovPersonsFromXml(undefined)).to.throw(TypeError);
     });
 
@@ -19,14 +19,14 @@ describe('xmlToJson', function () {
                 </ORGUNIT>\
             </ORGANIZATION>\
         </DIRECTORY>';
-      chai.expect([]).eql(xmlToJson.getBcGovPersonsFromXml(xml));
+      chai.expect(xmlToJson.getBcGovPersonsFromXml(xml)).eql([]);
     });
 
     it('should return a name with all expected fields if passed correct xml', () => {
       const xml = '\
         <DIRECTORY xmlns="http://pub.data.gov.bc.ca/schemas/bcgov_directory/2012/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pub.data.gov.bc.ca/schemas/bcgov_directory/2012/1 http://pub.data.gov.bc.ca/schemas/bcgov_directory/2012/1/bcgov_directory_2012_1.xsd">\
             <ORGANIZATION NAME="Agricultural Land Commission">\
-                <ORGUNIT>\
+                <ORGUNIT NAME="Agricultural Land Commission Unit">\
                     <PERSON>\
                         <TITLE>faker</TITLE>\
                         <NAME>Fake, Fakerson</NAME>\
@@ -41,16 +41,17 @@ describe('xmlToJson', function () {
         title: 'faker',
         phone: '604 660-7007',
         email: 'Fake.Fakerson@gov.bc.ca',
-        organization: 'Agricultural Land Commission'
+        organization: 'Agricultural Land Commission',
+        organizationUnit: 'Agricultural Land Commission Unit'
       };
-      chai.expect([expectedPerson]).eql(xmlToJson.getBcGovPersonsFromXml(xml));
+      chai.expect(xmlToJson.getBcGovPersonsFromXml(xml)).eql([expectedPerson]);
     });
 
     it('should ignore persons with no name', () => {
       const xml = '\
       <DIRECTORY xmlns="http://pub.data.gov.bc.ca/schemas/bcgov_directory/2012/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pub.data.gov.bc.ca/schemas/bcgov_directory/2012/1 http://pub.data.gov.bc.ca/schemas/bcgov_directory/2012/1/bcgov_directory_2012_1.xsd">\
           <ORGANIZATION NAME="Agricultural Land Commission">\
-              <ORGUNIT>\
+              <ORGUNIT NAME="Agricultural Land Commission Unit">\
                   <PERSON>\
                       <TITLE>faker</TITLE>\
                       <NAME>Fake, Fakerson</NAME>\
@@ -70,16 +71,17 @@ describe('xmlToJson', function () {
         title: 'faker',
         phone: '604 660-7007',
         email: 'Fake.Fakerson@gov.bc.ca',
-        organization: 'Agricultural Land Commission'
+        organization: 'Agricultural Land Commission',
+        organizationUnit: 'Agricultural Land Commission Unit'
       };
-      chai.expect([expectedPerson]).eql(xmlToJson.getBcGovPersonsFromXml(xml));
+      chai.expect(xmlToJson.getBcGovPersonsFromXml(xml)).eql([expectedPerson]);
     });
 
     it('should ignore persons with no contacts', () => {
       const xml = '\
       <DIRECTORY xmlns="http://pub.data.gov.bc.ca/schemas/bcgov_directory/2012/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pub.data.gov.bc.ca/schemas/bcgov_directory/2012/1 http://pub.data.gov.bc.ca/schemas/bcgov_directory/2012/1/bcgov_directory_2012_1.xsd">\
           <ORGANIZATION NAME="Agricultural Land Commission">\
-              <ORGUNIT>\
+              <ORGUNIT NAME="Agricultural Land Commission Unit">\
                   <PERSON>\
                       <TITLE>faker</TITLE>\
                       <NAME>Fake, Fakerson</NAME>\
@@ -98,16 +100,17 @@ describe('xmlToJson', function () {
         title: 'faker',
         phone: '604 660-7007',
         email: 'Fake.Fakerson@gov.bc.ca',
-        organization: 'Agricultural Land Commission'
+        organization: 'Agricultural Land Commission',
+        organizationUnit: 'Agricultural Land Commission Unit'
       };
-      chai.expect([expectedPerson]).eql(xmlToJson.getBcGovPersonsFromXml(xml));
+      chai.expect(xmlToJson.getBcGovPersonsFromXml(xml)).eql([expectedPerson]);
     });
 
     it('should ignore vacant persons', () => {
       const xml = '\
       <DIRECTORY xmlns="http://pub.data.gov.bc.ca/schemas/bcgov_directory/2012/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pub.data.gov.bc.ca/schemas/bcgov_directory/2012/1 http://pub.data.gov.bc.ca/schemas/bcgov_directory/2012/1/bcgov_directory_2012_1.xsd">\
           <ORGANIZATION NAME="Agricultural Land Commission">\
-              <ORGUNIT>\
+              <ORGUNIT NAME="Agricultural Land Commission Unit">\
                   <PERSON>\
                       <TITLE>faker</TITLE>\
                       <NAME>vacant</NAME>\
@@ -136,7 +139,7 @@ describe('xmlToJson', function () {
       const inputXml = fs.readFileSync(inFile).toString();
       const outputJson = fs.readJsonSync(outFile);
 
-      chai.expect(outputJson.persons).eql(xmlToJson.getBcGovPersonsFromXml(inputXml));
+      chai.expect(xmlToJson.getBcGovPersonsFromXml(inputXml)).eql(outputJson.persons);
     });
   });
 });
