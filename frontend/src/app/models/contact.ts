@@ -4,14 +4,12 @@ export class Contact {
   public phone: string;
   public email: string;
   public organization: string;
-  public organizationUnit: string;
 
   constructor(contact) {
     this.name = (contact && contact.name) || '';
     this.title = (contact && contact.title) || '';
     this.email = (contact && contact.email) || '';
-    this.organization = (contact && contact.organization) || '';
-    this.organizationUnit = (contact && contact.organizationUnit) || '';
+    this.organization = (contact && this.getCombinedOrganization(contact.organization, contact.organizationUnit)) || '';
     this.phone = (contact && contact.phone) || '';
   }
 
@@ -20,18 +18,18 @@ export class Contact {
    * If the non-empty organization/organizationUnit are equal, return only the organization.
    * @return a string containing the organization and/or organizationUnit, or empty-string if both values are empty.
    */
-  getCombinedOrganization(): string {
+  getCombinedOrganization(org, orgUnit): string {
     let combinedOrg = '';
-    if (this.organization && this.organizationUnit) {
-      if (this.organization === this.organizationUnit) {
-        combinedOrg = this.organization;
+    if (org && orgUnit) {
+      if (org === orgUnit) {
+        combinedOrg = org;
       } else {
-        combinedOrg = `${this.organization} - ${this.organizationUnit}`;
+        combinedOrg = `${org} - ${orgUnit}`;
       }
-    } else if (this.organization) {
-      combinedOrg = this.organizationUnit;
-    } else if (this.organizationUnit) {
-      combinedOrg = this.organizationUnit;
+    } else if (org) {
+      combinedOrg = org;
+    } else if (orgUnit) {
+      combinedOrg = orgUnit;
     }
     return combinedOrg;
   }
