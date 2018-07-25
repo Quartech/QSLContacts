@@ -1,16 +1,15 @@
 .app-header {
-  padding: 1rem 1.5rem;
-  padding-left: 4.25rem;
-  background: #333;
+  padding: 1rem;
+  border-bottom: 3px solid #fcba19;
+  background: #003366;
   color: #fff;
-  background-image: url('/assets/images/qsl-sm.png');
   background-position: 0.75rem center;
   background-repeat: no-repeat;
   background-size: 2.75rem;
 
   h1 {
     margin: 0;
-    font-size: 1.25rem;
+    font-size: 1rem;
     font-weight: normal;
 
     span {
