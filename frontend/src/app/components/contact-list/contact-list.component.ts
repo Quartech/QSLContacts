@@ -48,7 +48,7 @@ export class ContactListComponent implements OnInit {
     this.api
       .getContactVCard(contact)
       .subscribe(
-        response => saveAs(new Blob([response.data], { type: 'text/plain' }), `${contact.email}.vcf`),
+        response => saveAs(new Blob([response.data], { type: 'text/vcard' }), `${contact.email}.vcf`),
         error => console.log(error)
       );
   }
