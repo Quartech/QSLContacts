@@ -1,8 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Contact } from '@app/models/contact';
-import { ContactFilterPipe } from '../../pipes/contact-filter.pipe';
+import { Component, OnInit } from '@angular/core';
 import { ApiService } from '@app/core';
+import { Contact } from '@app/models/contact';
 import { saveAs } from 'file-saver/FileSaver';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ContactFilterPipe } from '../../pipes/contact-filter.pipe';
 
 @Component({
   selector: 'app-contact-list',
@@ -24,18 +25,20 @@ export class ContactListComponent implements OnInit {
 
   private ContactFilterPipe: ContactFilterPipe;
 
-  constructor(private api: ApiService) {
+  constructor(private api: ApiService, private spinner: NgxSpinnerService) {
     this.ContactFilterPipe = new ContactFilterPipe();
   }
 
   ngOnInit() {
     this.loading = true;
+    this.spinner.show();
 
     // load contacts
     this.api.getContacts().subscribe(response => {
       this.allContacts = response.data.map(item => new Contact(item));
       this.resetFilteredContacts();
       this.resetDisplayedContacts();
+      this.spinner.hide();
       this.loading = false;
     });
   }
