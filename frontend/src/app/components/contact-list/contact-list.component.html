@@ -1,4 +1,8 @@
 
+
+<!-- Loading spinner -->
+<ngx-spinner  type="square-spin"></ngx-spinner>
+
 <!-- Search-->
 <div class="searchbox">
   <div class="searchbox__input">
@@ -8,10 +12,6 @@
     </button>
   </div>
 </div>
-
-<ng-container *ngIf="loading">
-  <div class="loading">Loading contact directory...</div>
-</ng-container>
 
 <!-- Contact List -->
 <div class="contact-list" *ngIf="!loading">

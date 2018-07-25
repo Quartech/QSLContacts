@@ -1,11 +1,11 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { CoreModule } from '@app/core';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
+import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from '@app/app.component';
 import { ContactListComponent } from '@app/components/contact-list/contact-list.component';
+import { CoreModule } from '@app/core';
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { ContactFilterPipe } from './pipes/contact-filter.pipe';
 
 @NgModule({
@@ -18,7 +18,8 @@ import { ContactFilterPipe } from './pipes/contact-filter.pipe';
     BrowserModule,
     HttpClientModule,
     CoreModule,
-    FormsModule
+    FormsModule,
+    NgxSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
