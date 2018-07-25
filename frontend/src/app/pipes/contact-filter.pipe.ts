@@ -21,6 +21,7 @@ export class ContactFilterPipe implements PipeTransform {
             (item.name.toLowerCase().includes(term.toLowerCase()) ||
               item.title.toLowerCase().includes(term.toLowerCase()) ||
               item.organization.toLowerCase().includes(term.toLowerCase()) ||
+              item.organizationUnit.toLowerCase().includes(term.toLowerCase()) ||
               item.email.toLowerCase().includes(term.toLowerCase()) ||
               item.phone.toLowerCase().includes(term.toLowerCase()));
         });
