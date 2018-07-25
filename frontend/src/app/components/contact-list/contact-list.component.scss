@@ -37,6 +37,12 @@
   }
 }
 
+.loading {
+  text-align: center;
+  font-weight: 600;
+  font-style: italic;
+}
+
 // Contact List
 .contact-list {
   flex: 1 1 auto;
@@ -149,7 +155,7 @@
 }
 
 @media (min-width: 1024px) {
-  .contact-card__actions {  
+  .contact-card__actions {
     li {
       float: left;
       overflow: hidden;
@@ -158,7 +164,7 @@
         margin-left: 0.25rem;
       }
     }
-    
+
     .btn {
       max-width: 100%;
       overflow: hidden;

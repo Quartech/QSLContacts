@@ -13,7 +13,7 @@ export class ContactListComponent implements OnInit {
   public allContacts: Array<Contact> = [];
   public displayedContacts: Array<Contact> = [];
   public filteredContacts: Array<Contact> = [];
-
+  public loading: boolean;
   public searchString: string;
 
   public config = {
@@ -29,11 +29,14 @@ export class ContactListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loading = true;
+
     // load contacts
     this.api.getContacts().subscribe(response => {
       this.allContacts = response.data.map(item => new Contact(item));
       this.resetFilteredContacts();
       this.resetDisplayedContacts();
+      this.loading = false;
     });
   }
 

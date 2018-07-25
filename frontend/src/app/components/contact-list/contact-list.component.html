@@ -9,8 +9,12 @@
   </div>
 </div>
 
+<ng-container *ngIf="loading">
+  <div class="loading">Loading contact directory...</div>
+</ng-container>
+
 <!-- Contact List -->
-<div class="contact-list">
+<div class="contact-list" *ngIf="!loading">
 
   <ul class="list-group">
     <li class="pagination__result-count list-group-item" [innerHTML]="getFilteredContactsCountMessage()"></li>
