@@ -8,6 +8,7 @@
   background-size: 2.75rem;
 
   h1 {
+    float: left;
     margin: 0;
     font-size: 1rem;
     font-weight: normal;
@@ -17,6 +18,33 @@
       display: block;
       font-size: 0.85rem;
       opacity: 0.75;
+    }
+  }
+
+  a {
+    margin-top: 0.1rem;
+    float: right;
+    font-size: 0.7rem;
+    color: #fff;
+    opacity: 0.75;
+
+    &:active,
+    &:focus,
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+@media (max-width: 320px) {
+  .app-header {
+    h1 {
+      font-size: 0.9375rem;
+    }
+
+    a {
+      margin-top: 0.2rem;
+      font-size: 0.6rem;
     }
   }
 }
