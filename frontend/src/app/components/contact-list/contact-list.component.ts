@@ -4,6 +4,7 @@ import { Contact } from '@app/models/contact';
 import { saveAs } from 'file-saver/FileSaver';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ContactFilterPipe } from '../../pipes/contact-filter.pipe';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-contact-list',
@@ -48,7 +49,17 @@ export class ContactListComponent implements OnInit {
     this.api
       .getContactVCard(contact)
       .subscribe(
-        response => saveAs(new Blob([response.data], { type: 'text/x-vcard' }), `${contact.email}.vcf`),
+        response => {
+          if("download" in document.createElement("a")) {
+            saveAs(new Blob([response.data], { type: 'text/x-vcard' }), `${contact.email}.vcf`);
+          } else {
+            // Request the file directly using an anchor if the broswer does not support the download attribute.
+            var link=document.createElement('a');
+            link.href=`${environment.serverUrl}/api/v1/contactvcard?vcard=${encodeURI(JSON.stringify(contact))}`;
+            link.setAttribute('download', '${contact.email}.vcf');
+            link.click();
+          }
+        },
         error => console.log(error)
       );
   }
