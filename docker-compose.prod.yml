@@ -1,13 +1,13 @@
 version: '3.6'
 services:
   frontend:
-    build:
-      dockerfile: Dockerfile-prod
-    ports:
-      - '80:80'
-      - '443:443'
+    command:
+      ng build --prod
+  caddy:
     volumes:
-      # This path depends on where the docker-compose file is being executed from and is only needed when creating/renewing the https ssl certs.
-      # - /home/git/letsencrypt/well-known:/usr/share/nginx/html/www/letsencrypt
-      # The created/renewed http ssl certs live here.
-      - /etc/letsencrypt/:/etc/letsencrypt/
+      #This is the offline location to store Caddy certificates in case the container is restarted.
+      - $HOME/.caddy:/etc/caddycerts
+    environment:
+      domain_1: quartech.app
+      domain_2: www.quartech.app
+      CADDYPATH: /etc/caddycerts

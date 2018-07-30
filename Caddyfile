@@ -1,0 +1,13 @@
+{$domain_1} {$domain_2}
+root /var/www/html/frontend
+proxy /api/v1/ backend:3000 {
+    header_upstream Host {host}
+    header_upstream X-Real-IP {remote}
+    header_upstream X-Forwarded-For {remote}
+    header_upstream X-Forwarded-Proto {scheme}
+}
+
+gzip
+log /var/www/caddy.log
+
+tls devin.smith@quartech.com

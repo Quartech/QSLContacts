@@ -52,6 +52,13 @@ export class ContactListComponent implements OnInit {
         response => {
           if("download" in document.createElement("a")) {
             saveAs(new Blob([response.data], { type: 'text/x-vcard' }), `${contact.email}.vcf`);
+          } else if (navigator.userAgent.match('CriOS')) {
+            var reader = new FileReader();
+            var out = new Blob([response.data], {type: 'text/x-vcard'});
+            reader.onload = function(e){
+              window.location.href = reader.result;
+            }
+            reader.readAsDataURL(out);
           } else {
             // Request the file directly using an anchor if the broswer does not support the download attribute.
             var link=document.createElement('a');

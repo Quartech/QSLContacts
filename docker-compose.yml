@@ -6,12 +6,30 @@ services:
     image: frontend-qsl-contacts:latest
     networks:
       - shared
+    volumes:
+      - ./frontend/dist:/usr/src/app/dist
   backend:
     build:
       context: ./backend
     image: backend-qsl-contacts:latest
     networks:
       - shared
+  caddy:
+    depends_on:
+      - frontend
+    image: abiosoft/caddy
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - shared
+    volumes:
+      - ./Caddyfile:/etc/Caddyfile
+      - ./frontend/dist:/var/www/html
+      - ./.caddy:/root/.caddy
+    environment:
+      #Required to bypass prompt in docker image.
+      - ACME_AGREE=true
 
 networks:
   shared:
