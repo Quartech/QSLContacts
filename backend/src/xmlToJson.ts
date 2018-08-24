@@ -137,8 +137,13 @@ function getContactField(contactJson: any, fieldName: string): string {
       }
     });
     return text;
+  } else {
+    let text: string = '';
+    if (contactJson['_attributes']['TYPE'] === fieldName) {
+      text = contactJson['_text'];
+    }
+    return text;
   }
-  return contactJson['_text'] || '';
 }
 
 /**

@@ -36,7 +36,7 @@ export function applyRoutes(app: restify.Server) {
         serviceID: `${app.name}`,
         message: 'Application is running',
         status: 'pass',
-        uptime: Math.floor(process.uptime()),
+        uptime: Math.floor(process.uptime())
       }
     });
   };
@@ -60,20 +60,18 @@ export function applyRoutes(app: restify.Server) {
     res.send(vcard.getFormattedString());
   };
 
-
   /**
    * Obtains the contacts Json response from the cache, or queries/converts the BCGOV xml.
    * @param callback will contain the data if processing is successful, else error.
    */
-  function handleContactsJsonResponse (): Promise<Person[]> {
+  function handleContactsJsonResponse(): Promise<Person[]> {
     const cachedResponse: Person[] = ResponseCache.getInstance().getCachedResponse();
     if (cachedResponse) {
       logger.debug('Returning cached contacts api response.');
       return Promise.resolve(cachedResponse);
     }
 
-    return axios.get(config.app.apiUrl)
-    .then(handleContactsXml);
+    return axios.get(config.app.apiUrl).then(handleContactsXml);
   }
 
   /**
@@ -100,7 +98,7 @@ export function applyRoutes(app: restify.Server) {
       logger.info('Returning saved offline response as BCGOV xml could not be processed.');
       return offlineResponse;
     } else {
-      throw(new Error('No offline data available'));
+      throw new Error('No offline data available');
     }
   }
 
