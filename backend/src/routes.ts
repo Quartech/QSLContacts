@@ -1,6 +1,6 @@
 import axios from 'axios';
 import restify from 'restify';
-import { InternalServerError } from 'restify-errors';
+import { InternalServerError, BadRequestError } from 'restify-errors';
 import { Person, getBcGovPersonsFromXml } from './xmlToJson';
 import logger from './lib/logger';
 import config from './config/secrets';
@@ -55,7 +55,21 @@ export function applyRoutes(app: restify.Server) {
       });
   };
 
-  const contactVCard: restify.RequestHandler = (req, res, next) => {
+  const contactVCardGet: restify.RequestHandler = (req, res, next) => {
+    try {
+      const vcard = createVCard(JSON.parse(req.query.vcard));
+      res.setHeader('content-type', 'x-vcard');
+      res.setHeader('content-disposition', `attachment; filename=${vcard.email}.vcf`);
+      res.write(vcard.getFormattedString());
+      res.end();
+    } catch (err) {
+      logger.debug(req.query.vcard);
+      logger.error(err);
+      res.send(new BadRequestError(err));
+    }
+  };
+
+  const contactVCardPost: restify.RequestHandler = (req, res, next) => {
     const vcard = createVCard(req.body);
     res.send(vcard.getFormattedString());
   };
@@ -111,7 +125,8 @@ export function applyRoutes(app: restify.Server) {
   app.get('/health', respondWith(health));
   app.get('/contacts', respondWith(listContacts));
 
-  app.post('/contactvcard', respondWith(contactVCard));
+  app.get('/contactvcard', respondWith(contactVCardGet));
+  app.post('/contactvcard', respondWith(contactVCardPost));
 
   // TODO: add your routes here
   // ...

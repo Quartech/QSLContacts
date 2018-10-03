@@ -3,6 +3,12 @@ services:
   frontend:
     ports:
     - 4200:4200
+    command:
+      ng build
   backend:
     ports:
       - 3000:3000
+  caddy:
+    environment:
+      #overwrite Caddy to localhost, which disables https.
+      domain: "http://localhost:80"
