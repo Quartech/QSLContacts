@@ -9,3 +9,5 @@ services:
       - '/usr/src/app/node_modules'
     ports:
       - "4200:4200"
+      - '49153:49153'
+    entrypoint: [ "ng", "serve", "--host", "0.0.0.0", "--poll", "2000" ]

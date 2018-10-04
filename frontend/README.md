@@ -35,10 +35,12 @@ $ npm start
 
 ## Development
 
-1. Run ```docker-compose up --build``` to build and run **frontend** container.
+1. Run `docker-compose up --build` (or `run.sh` in this folder) to build and run **frontend** container.
 It will serve the application on port 4200. Any changes to the code will trigger the livereload functionality to reflect the changes in the browser.
-3. (Optional) Open an interactive shell to poke around in the container
-4. You can verify the container is running using the command ```docker container ls | grep frontend-qsl-contacts```
+2. (Optional) Open an interactive shell to poke around in the container
+3. You can verify the container is running using the command ```docker container ls | grep frontend-qsl-contacts```
+
+**Note:** an instance of the back-end needs to be running for the frontend to work properly.
 
 ### Linting
 
