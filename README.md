@@ -1,89 +1,28 @@
-# Code Challenge Notice, Instructions & Rules
+# QSLContacts
 
-Re: Competition "The Sprint with Us Code Challenge" (the Mock Sprint with Us Code Challenge)
+## About
 
-Quartech Contact/Product Owner: brad.head@gmail.com 
+QSLContacts was born to address the need of easily accessing the the [BC Government Directory](http://dir.gov.bc.ca/downloads/BCGOV_directory.xml), which is exposed as XML by [DataBC](https://data.gov.bc.ca/).
 
-This notice is dated July 11, 2018 (the “Notice Date”).
+The application is written in Javascript, and uses a [NodeJS](https://nodejs.org) backend and an [Angular](https://angular.io/) frontend.
 
-Congratulations - you are eligible to participate in this Mock Code Challenge.
+## Functionality
 
-## Rules and Instructions
+QSLContacts will fetch the XML containing the BC Government Directory and display a searchable list of contacts. Similarly to a mobile phone adrress book, the search function will perform a lookup throughout all of the contact attributes (name, email, phone, etc.) and only display the results that match all of the search terms.
 
-Please be advised of the following rules and instructions:
+It is possible to initiate a phone call or compose an email just by clicking the relevant buttons on the desired contact. Similarly, a vCard containing all of the contact's information can be downloaded using the appropriate function.
 
-1. These code challenge rules and instructions apply only to selected participants.
-2. The participants will have no less than five (5) Business Days from the Notice Date to complete the code challenge. The deadline to complete the code challenge in accordance with these rules is 2:00 p.m. Pacific Time on Thursday, July 19, 2018 (the “Deadline”).
-3. The participants code challenge submission Deliverable (defined below) must be received by QSL (as provided for by these instructions) and be deposited and located in the applicable Repository before the Deadline.
-4. Only the invited Participants are eligible to participate in the Code Challenge.
-5. The Participants will be sent invites via GitHub to join this private repository (https://github.com/Quartech/QSLContacts). 
-6. As of the Notice Date, the code challenge issue has been created in this private repository (https://github.com/Quartech/QSLContacts), under the "Quartech" organization.
-7. Participants may direct clarifying questions to QSL Contact - Brad Head at any time.
+The contact list is cached in case the xml directory it becomes unavailable. The cache timeout is set by default to 60 minutes, but it can be overridden by setting the encironment variable `CACHE_TTL` to the desired value (in seconds).
 
-# Code Challenge (QSL Contacts App)
+## Running the app
 
-## Description
+To start the application in development mode execute the command ```start.sh``` in this directory. Once the docker containers are up and running, the application will serve at http://localhost:4200 
 
-The task is to provide useful access to the Open Data BC Government Directory that is available in XML form. Useful access includes web access on both desktop and mobile platforms.
+To start the application in production mode, pass the -p argument to the start script: ```start.sh -p```. A production-ready instance of the application, using [Caddy](https://caddyserver.com/) to serve the frontend, will be started.
+**Note:** the production setup will require updating the application domain(s) in `docker-compose-prod.yml`, and will not currently run in localhost.
 
-## Requirements
+To run the frontend or backend independently, please refer to the instructions in the relevant readme file.
 
-* Docker
-* Node.JS
-
-## Code Challenge Instructions
-
-### Introduction
-
-This code challenge asks you to build an application that fetches the BC Government Directory XML document from DataBC.  The application must be able to convert the XML, enable search and display on screen (big and little) and to all the exporting of contact information as a VCard 3.0 file.
-
-The application must allow a user to find a contact by at least name or partial name.  The user must also be able to filter contacts by organization.
-The application must support sorting contacts by surname, by default.
-
-The url to the xml file, which the government updates daily is: http://dir.gov.bc.ca/downloads/BCGOV_directory.xml
-
-### Technical Requirements
-
-Participating teams are not limited to a certain stack or any specific technologies.  We do encourage everyone to use a stack that is commonly used in developing modern web applications.
-
-### User Stories
-
-The initial backlog consists of the following user stories.  The stories are in the current priority order of the Product Owner.
-
-#### User Story #1 – View the BC Government directory as a contact list
-
-As a user, I want to be able to view the BC government directory as a listing, ordered by surname ascending, and then each list item, I can navigate to the details of the user. 
-
-#### User Story #2 – Search by government employee attribute
-
-As a user, I want a single search field that I can use to filter the list of government employee contacts. This may be by name, partial name or other inofmration, i.e. phone number, etc. Ideally, the results are shown as I type.
-
-#### User Story #3 – Email a contact from the contact details view 
-
-As a user, I want to conveniently click on the contact's email address and have it attempt to invoke my system's default email application.
-
-#### User Story #4 – Phone a contact from the contact details view
-
-As a user, I want to be able to phone a contact by clicking or tapping on the phone number. This need only function when I am using a smartphone.
- 
-#### User Story #5 – Save as VCard 3.0 
-
-As a user, I want to have the option to save a contact details as a VCARD 3.0 format and ideally, have it available to import into my default contacts application whether on a phone, tablet or desktop. 
-
-#### User Story #6 – Service is available when the xml file is not.
-
-As a user, I want to be able to browse the contact list even when access to the government's BCGOV_Directory.xml file is offline.
-
-### Submission Requirements
-
-1. The submission must be capable of running on any docker-enabled platform
-2. Users must be able to run the application on modern browsers, including Microsoft Internet Explorer 11.0 and up.
-3. You must update the repository’s README file to include any instructions required for the code challenge evaluators to build and run your team’s application.
-
----
-
-# How to run the application
-
-To run the application in production mode, run ```start.sh -p``` in this directory. When the images are built and the containers have been started, the application will be accessible at http://localhost.
+## Stopping the app
 
 To stop the containers, run ```stop.sh``` in this directory.
