@@ -16,12 +16,12 @@ The contact list is cached in case the xml directory it becomes unavailable. The
 
 ## Running the app
 
-To start the application in development mode execute the command ```start.sh``` in this directory. Once the docker containers are up and running, the application will serve at http://localhost:4200 
+To run the application locally, execute the command ```start.sh``` in this directory. Once the docker containers are up and running, the application will serve at http://localhost:80 
 
 To start the application in production mode, pass the -p argument to the start script: ```start.sh -p```. A production-ready instance of the application, using [Caddy](https://caddyserver.com/) to serve the frontend, will be started.
-**Note:** the production setup will require updating the application domain(s) in `docker-compose-prod.yml`, and will not currently run in localhost.
+**Note:** ensure that the variables `domain_1, domain2` in `docker-compose-prod.yml` are updated with your domain name(s).
 
-To run the frontend or backend independently, please refer to the instructions in the relevant readme file.
+To run the frontend or backend independently, or run them in development mode, please refer to the instructions in the relevant readme file.
 
 ## Stopping the app
 
