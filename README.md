@@ -26,3 +26,5 @@ To run the frontend or backend independently, or run them in development mode, p
 ## Stopping the app
 
 To stop the containers, run ```stop.sh``` in this directory.
+
+I changed this.
