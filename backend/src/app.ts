@@ -43,6 +43,7 @@ const cors = corsMiddleware({
 });
 app.pre(cors.preflight);
 app.use(cors.actual);
+app.use(restify.plugins.conditionalRequest());
 
 // enable gzip
 app.use(restify.plugins.gzipResponse());
