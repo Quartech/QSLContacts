@@ -1,10 +1,10 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import restify from 'restify';
 import { InternalServerError, BadRequestError } from 'restify-errors';
 import { Person, getBcGovPersonsFromXml } from './xmlToJson';
 import logger from './lib/logger';
 import config from './config/secrets';
-import ResponseCache from './lib/cache';
+import ResponseCache, { Response } from './lib/cache';
 import { createVCard } from './jsonToVcard';
 
 // wraps request handling code to ensure next() is always called at the end...
@@ -41,10 +41,18 @@ export function applyRoutes(app: restify.Server) {
     });
   };
 
+  const etag: restify.RequestHandler = (req, res, next) => {
+    const response: Response = ResponseCache.getInstance().getCachedResponse();
+    if (response) {
+      res.setHeader('Last-Modified', response.lastModified);
+      res.setHeader('ETag', response.eTag);
+    }
+    next();
+  };
+
   const listContacts: restify.RequestHandler = (req, res, next) => {
     logger.debug('starting /contacts request');
-
-    handleContactsJsonResponse()
+    handleContactsJsonResponse(res)
       .then(persons => {
         res.send(persons);
         logger.debug('completed /contacts request');
@@ -53,6 +61,7 @@ export function applyRoutes(app: restify.Server) {
         logger.error(err);
         res.send(new InternalServerError(err));
       });
+      next();
   };
 
   const contactVCardGet: restify.RequestHandler = (req, res, next) => {
@@ -78,14 +87,15 @@ export function applyRoutes(app: restify.Server) {
    * Obtains the contacts Json response from the cache, or queries/converts the BCGOV xml.
    * @param callback will contain the data if processing is successful, else error.
    */
-  function handleContactsJsonResponse(): Promise<Person[]> {
-    const cachedResponse: Person[] = ResponseCache.getInstance().getCachedResponse();
+  function handleContactsJsonResponse (res): Promise<Person[]> {
+    const cachedResponse: Response = ResponseCache.getInstance().getCachedResponse();
     if (cachedResponse) {
       logger.debug('Returning cached contacts api response.');
-      return Promise.resolve(cachedResponse);
+      return Promise.resolve(cachedResponse.persons);
     }
 
-    return axios.get(config.app.apiUrl).then(handleContactsXml);
+    return axios.get(config.app.apiUrl)
+    .then((response: AxiosResponse<any>) => handleContactsXml(res, response));
   }
 
   /**
@@ -94,13 +104,16 @@ export function applyRoutes(app: restify.Server) {
    * @param xmlData the downloaded xml data
    * @param callback will contain the data if processing is successful, else error.
    */
-  function handleContactsXml(xmlResponse): Person[] {
+  function handleContactsXml(res, xmlResponse): Person[] {
     const cache: ResponseCache = ResponseCache.getInstance();
     let xmlErr: string;
     if (xmlResponse && xmlResponse.data) {
       try {
+        res.setHeader('ETag', xmlResponse.headers['etag']);
+        res.setHeader('Last-Modified', xmlResponse.headers['last-modified']);
+
         const persons: Person[] = getBcGovPersonsFromXml(xmlResponse.data);
-        cache.setCachedResponse(persons);
+        cache.setCachedResponse(persons, xmlResponse.headers['last-modified'], xmlResponse.headers['etag']);
         return persons;
       } catch (parseError) {
         xmlErr = parseError;
@@ -110,7 +123,7 @@ export function applyRoutes(app: restify.Server) {
     const offlineResponse = cache.getOfflineResponse();
     if (offlineResponse) {
       logger.info('Returning saved offline response as BCGOV xml could not be processed.');
-      return offlineResponse;
+      return offlineResponse.persons;
     } else {
       throw new Error('No offline data available');
     }
@@ -123,7 +136,7 @@ export function applyRoutes(app: restify.Server) {
   app.get('/', respondWith(index));
   app.get('/echo/:name', respondWith(echo));
   app.get('/health', respondWith(health));
-  app.get('/contacts', respondWith(listContacts));
+  app.get('/contacts', etag, restify.plugins.conditionalRequest(), listContacts);
 
   app.get('/contactvcard', respondWith(contactVCardGet));
   app.post('/contactvcard', respondWith(contactVCardPost));

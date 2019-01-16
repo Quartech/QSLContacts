@@ -3,6 +3,11 @@ import logger from './logger';
 import config from '../config/secrets';
 import axios from 'axios';
 import { Person, getBcGovPersonsFromXml } from '../xmlToJson';
+export interface Response {
+    persons: Person[];
+    lastModified: string;
+    eTag: string;
+  }
 
 /**
  * Simple 2-level cache implementation that stores the contacts response
@@ -14,7 +19,7 @@ export default class ResponseCache {
   private checkInterval: number = config.cache.cacheInterval;
   private key = 'contacts';
 
-  private offlineResponse: Person[];
+    private offlineResponse: Response;
   private static cacheInstance: ResponseCache;
 
   private constructor() {
@@ -33,10 +38,17 @@ export default class ResponseCache {
    * set the contacts response within the cache.
    * @param response
    */
-  public setCachedResponse(response: Person[]): void {
-    if (!response) {
+    public setCachedResponse(persons: Person[], lastModified, eTag): void {
+        if (!persons) {
       throw new TypeError('empty responses should not be cached.');
     }
+
+        const response: Response = {
+            persons: persons,
+            lastModified: lastModified,
+            eTag: eTag
+        };
+
     this.cache.set(this.key, response, (err, success) => {
       if (err) {
         logger.error('failed to cache request with err: ' + err);
@@ -50,9 +62,8 @@ export default class ResponseCache {
   /**
    * Get the cached contacts Json response.
    */
-  public getCachedResponse(): Person[] {
-    const cached: Person[] = this.cache.get(this.key);
-    return cached;
+    public getCachedResponse(): Response {
+        return this.cache.get(this.key);
   }
 
   /**
@@ -64,7 +75,7 @@ export default class ResponseCache {
       .then(xmlResponse => {
         if (xmlResponse && xmlResponse.data) {
           const persons: Person[] = getBcGovPersonsFromXml(xmlResponse.data);
-          ResponseCache.cacheInstance.setCachedResponse(persons);
+          ResponseCache.cacheInstance.setCachedResponse(persons, xmlResponse.headers['last-modified'], xmlResponse.headers['etag']);
         }
       })
       .catch(error => {
@@ -76,7 +87,7 @@ export default class ResponseCache {
    * TODO: Consider using fs here.
    * Get the stored offline contacts Json response from memory.
    */
-  public getOfflineResponse(): Person[] {
+    public getOfflineResponse(): Response {
     return this.offlineResponse;
   }
 }
