@@ -1,22 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ApiService } from '@app/core';
 import { Contact } from '@app/models/contact';
 import { saveAs } from 'file-saver/FileSaver';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ContactFilterPipe } from '../../pipes/contact-filter.pipe';
 import { environment } from '@env/environment';
+import { ActivatedRoute, Router } from '@angular/router';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-contact-list',
   templateUrl: './contact-list.component.html',
-  styleUrls: ['./contact-list.component.scss']
+  styleUrls: ['./contact-list.component.scss'],
 })
-export class ContactListComponent implements OnInit {
+export class ContactListComponent implements OnInit, OnDestroy {
   public allContacts: Array<Contact> = [];
   public displayedContacts: Array<Contact> = [];
   public filteredContacts: Array<Contact> = [];
   public loading: boolean;
   public searchString: string;
+  public routeSubscription: Subscription;
+
+  private routerTypingTimer: any;
+  private searchTypingTimer: any;
 
   public config = {
     increment: 10,
@@ -26,7 +32,7 @@ export class ContactListComponent implements OnInit {
 
   private ContactFilterPipe: ContactFilterPipe;
 
-  constructor(private api: ApiService, private spinner: NgxSpinnerService) {
+  constructor(private api: ApiService, private spinner: NgxSpinnerService, private router: Router, private route: ActivatedRoute) {
     this.ContactFilterPipe = new ContactFilterPipe();
   }
 
@@ -39,9 +45,17 @@ export class ContactListComponent implements OnInit {
       this.allContacts = response.data.map(item => new Contact(item));
       this.resetFilteredContacts();
       this.resetDisplayedContacts();
+      this.routeSubscription = this.route.queryParams.subscribe(params => {
+        this.searchString = params['search'] || '';
+        this.filterContacts();
+     });
       this.spinner.hide();
       this.loading = false;
     });
+  }
+
+  ngOnDestroy() {
+    this.routeSubscription.unsubscribe();
   }
 
   // convert contact to VCard and download
@@ -85,9 +99,17 @@ export class ContactListComponent implements OnInit {
 
   filterContacts() {
     this.searchString = this.searchString.trim();
+    clearTimeout(this.routerTypingTimer);
+    clearTimeout(this.searchTypingTimer);
     if (this.searchString.length > 2) {
-      this.filteredContacts = this.ContactFilterPipe.transform(this.allContacts, this.searchString);
-      this.filterDisplayedContacts();
+      //Do not change the route unless the user idles without typing for some time.
+      this.routerTypingTimer = setTimeout(() => this.router.navigate([''], { queryParams: { search: this.searchString } }), 5000);
+
+      //This should reduce some system overhead and make the typing feel smoother for fast typing (and in ie).
+      this.searchTypingTimer = setTimeout(() => {
+        this.filteredContacts = this.ContactFilterPipe.transform(this.allContacts, this.searchString);
+        this.filterDisplayedContacts();
+      }, 200);
     } else {
       this.resetFilteredContacts();
       this.resetDisplayedContacts();
@@ -100,6 +122,7 @@ export class ContactListComponent implements OnInit {
 
   resetDisplayedContacts() {
     this.displayedContacts = this.allContacts.slice(0, this.config.displayLimit);
+    
   }
 
   filterDisplayedContacts() {

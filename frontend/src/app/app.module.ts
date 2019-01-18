@@ -7,6 +7,11 @@ import { ContactListComponent } from '@app/components/contact-list/contact-list.
 import { CoreModule } from '@app/core';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ContactFilterPipe } from './pipes/contact-filter.pipe';
+import { RouterModule, Routes } from '@angular/router';
+
+const appRoutes: Routes = [
+  { path: '**', redirectTo: 'contact-list'},
+];
 
 @NgModule({
   declarations: [
@@ -19,7 +24,11 @@ import { ContactFilterPipe } from './pipes/contact-filter.pipe';
     HttpClientModule,
     CoreModule,
     FormsModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    RouterModule.forRoot(
+      appRoutes,
+      { useHash: true }
+    )
   ],
   providers: [],
   bootstrap: [AppComponent]
